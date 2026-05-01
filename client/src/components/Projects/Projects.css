@@ -42,7 +42,7 @@
 .search-bar__input {
   width: 100%;
   padding: 0.65rem 2.4rem 0.65rem 2.5rem;
-  background: rgba(22, 14, 5, 0.55);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--text-primary);
@@ -83,7 +83,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.62rem 1rem;
-  background: rgba(22, 14, 5, 0.55);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--text-secondary);
@@ -119,11 +119,11 @@
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  background: #1a0f06;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 10px;
   z-index: 100;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  box-shadow: var(--shadow);
   overflow: hidden;
   animation: ddFadeIn 0.12s ease;
 }
@@ -157,7 +157,7 @@
 }
 
 .dd-option:hover {
-  background: rgba(255,255,255,0.05);
+  background: var(--bg-secondary);
   color: var(--text-primary);
 }
 
@@ -194,7 +194,7 @@
 }
 
 .dd-tag-row:hover {
-  background: rgba(255,255,255,0.05);
+  background: var(--bg-secondary);
 }
 
 .dd-tag-name {
@@ -295,7 +295,7 @@
 
 .filter-pill:hover {
   color: var(--text-secondary);
-  background: rgba(255,255,255,0.04);
+  background: var(--bg-secondary);
   border-color: var(--border);
 }
 

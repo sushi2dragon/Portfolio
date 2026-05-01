@@ -57,7 +57,7 @@
 .about__card {
   width: 100%;
   max-width: 340px;
-  background: rgba(34, 22, 8, 0.75);
+  background: var(--bg-card);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);

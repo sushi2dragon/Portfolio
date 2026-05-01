@@ -28,6 +28,18 @@ const imageUpload = multer({
   },
 })
 
+const galleryUpload = multer({
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const ok = file.mimetype.startsWith('image/') ||
+               file.mimetype.startsWith('video/') ||
+               file.mimetype === 'application/pdf'
+    if (!ok) return cb(new Error('Only image, video, and PDF files are allowed'))
+    cb(null, true)
+  },
+})
+
 const resumeUpload = multer({
   storage,
   limits: { fileSize: 12 * 1024 * 1024 },
@@ -41,14 +53,24 @@ const resumeUpload = multer({
   },
 })
 
+const uploadUrl = (filename) => {
+  const base = process.env.BACKEND_URL || ''
+  return `${base}/uploads/${filename}`
+}
+
 router.post('/', requireAuth, imageUpload.single('image'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ url: `/uploads/${req.file.filename}` })
+  res.json({ url: uploadUrl(req.file.filename) })
+})
+
+router.post('/gallery', requireAuth, galleryUpload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
+  res.json({ url: uploadUrl(req.file.filename) })
 })
 
 router.post('/resume', requireAuth, resumeUpload.single('resume'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ url: `/uploads/${req.file.filename}` })
+  res.json({ url: uploadUrl(req.file.filename) })
 })
 
 module.exports = router

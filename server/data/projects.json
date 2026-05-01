@@ -1,157 +1,400 @@
 [
   {
-    "id": "1",
-    "title": "Portfolio Website",
-    "description": "This very site — a full-stack portfolio with Three.js background, admin CMS, and tag-filtered project tiles.",
-    "longDescription": "This portfolio was designed and built from scratch as a technical exercise and public showcase. The goal was to feel personal and handcrafted — not another cookie-cutter Tailwind template — while meeting professional expectations around performance and polish.\n\nThe Three.js particle network in the hero was one of the more challenging elements to get right. The particles need to feel alive without distracting from the content, and the whole scene has to clean up properly in React's strict mode without leaking WebGL contexts. The warm amber palette came as an intentional pushback against the typical cold grey/blue developer portfolio aesthetic.\n\nThe backend is a lightweight Express server with JWT auth and flat-file JSON storage — deliberately simple, since the data requirements don't justify a database. The admin dashboard makes it possible to update projects without touching source code, which matters when you're actually using the site day-to-day.",
-    "tags": ["React", "Three.js", "Node.js", "Express"],
-    "github": "https://github.com/",
-    "liveUrl": "",
+    "id": "1777700000001",
+    "title": "MapMIT",
+    "description": "Open-source high-fidelity 3D map of an engineering campus, receiving 20k requests within the first two weeks of launch.",
+    "longDescription": "An interactive campus mapping platform built to make navigating and understanding large spaces easier. Instead of static maps or outdated PDFs, MapMIT provides a structured, layered view of a campus—covering buildings, roads, and facilities in a way that can be explored, updated, and extended over time.\n\nOne of the key ideas behind the project is keeping the map dynamic instead of static. Rather than manually updating layouts, the system is being extended with drone/satellite-based surveying and photogrammetry, making it possible to continuously capture real-world changes and reflect them in the map. This shifts it from a simple web map to something closer to an automated mapping pipeline.\n\nThe project is fully open-source and built to scale beyond a single campus. While it starts with MIT Manipal, the same approach can be applied to any large environment—universities, tech parks, or even smart city use cases.\n\nThe v1 deployment received 20,000 requests within its first two weeks, which validated the need for an interactive map in large educational institutions",
+    "tags": [
+      "Photogrammetry",
+      "Meshroom",
+      "3D Reconstruction",
+      "GIS",
+      "GeoJSON",
+      "OpenLayers",
+      "Open Source",
+      "Drone"
+    ],
+    "github": "",
+    "liveUrl": "https://mit.nakshatramaps.com",
     "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Portfolio+—+Hero+Section",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Portfolio+—+Projects+Grid",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Portfolio+—+Admin+Dashboard"
+      "/uploads/1777614669213-image_2026-05-01_112109071.png",
+      "/uploads/1777614868231-image_2026-05-01_112428128.png"
     ],
     "isProprietaryWork": false,
-    "category": "personal",
-    "status": "completed",
-    "createdAt": "2024-01-01T00:00:00.000Z"
+    "projectDate": "2025-06",
+    "createdAt": "2025-02-01T00:00:00.000Z",
+    "category": "professional",
+    "status": "completed"
   },
   {
-    "id": "2",
-    "title": "AI Chat Interface",
-    "description": "A real-time chat application powered by a large language model API, with conversation history, streaming responses, and custom system prompts.",
-    "longDescription": "Built as an exploration of what a genuinely polished LLM interface could feel like. Most chat UIs are clones of ChatGPT; this one was designed to feel like a native desktop app, with an emphasis on keyboard navigation, dense information display, and minimal decorative chrome.\n\nThe backend streams tokens over WebSockets rather than waiting for full completions, which dramatically changes the perceived latency. Managing streaming state in React without excessive re-renders required careful memoization — the final solution uses a ref-based accumulator that only flushes to state every animation frame.\n\nContext window management turned out to be the most interesting UX problem. The app estimates token consumption in real time and surfaces a warning before conversations overflow, giving users the choice to summarize, prune, or start fresh rather than discovering truncation after the fact.",
-    "tags": ["React", "Python", "FastAPI", "WebSocket"],
-    "github": "https://github.com/",
-    "liveUrl": "",
-    "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=AI+Chat+—+Conversation+View",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=AI+Chat+—+System+Prompt+Editor"
+    "id": "1777700000002",
+    "title": "PC Snapshot",
+    "description": "A Windows desktop app that captures a full workspace state — open apps, browser tabs, terminal context — and restores it with one click.",
+    "longDescription": "#Dev Note: I’m someone who always has about 500 tabs open because I’m working on so many things at once—and I’m definitely not the only one. If I wanted to play a game on my laptop or switch operating systems for a task, I have to remember all the different various things I had open, which I found a bit tiring. Thats when it came to me: this should be as simple as pressing a button—click—and creating essentially a \"savestate\" for your entire workspace that you can load anytime.\nThen I realized it’s not just about convenience—it’s also a really clean way to organize workflows. You can have different “states” ready to go: one for app development, one for a course, one for web dev, and so on. Its an efficient method of context switching that lets you keep your personalized setups intact\n\nPC Snapshot solves the problem of losing context when switching between projects or shutting down. Built for Busy Professionals with a lot on their plate, the core idea is simple: take a snapshot of your current working state( apps, terminals, IDEs, files etc ) and restore it later with the click of a button.\n\nThe app is built with React, TypeScript, and Vite on the frontend, packaged as a native Windows desktop app via Tauri 2 with a Rust backend. The capture engine scans active processes foreground-first, extracts contextual metadata from IDEs (open files, active workspace), browsers (tabs and URLs), and terminals (current directory, session hints), then captures a desktop screenshot as a visual identifier.\n\nRestoration follows a seqential order of steps: the app launches applications in order, replays context macros (reopening files, repositioning windows to saved screen coordinates), and reports partial restores clearly rather than pretending everything succeeded. Snapshots are stored locally as structured JSON with an embedded thumbnail, making them visually browsable in the grid interface. There are no cloud dependencies, no profiles, no complexity — just capture, browse, and restore.\n\nI am someone who always has about 500 tabs open, because Im working on so many things at once, and Im not the only one, so if i wanted to play a game on my laptop, or switch operating systems for a task, I'd have to remember all the different various things I had open, So then it just came to me, it should be as easy as pressing a button -click- and essentially creating a save state for your current workspace, which you can restore anytime. Then I realised this idea could be used for organising different projects as well, you have all of your preffred workflows saved and ready to go (one for app development, one for a coursera course, one for web development, etc)\n\n",
+    "tags": [
+      "React",
+      "TypeScript",
+      "Tauri",
+      "Rust",
+      "Vite"
     ],
-    "isProprietaryWork": false,
-    "category": "personal",
-    "status": "completed",
-    "createdAt": "2024-01-03T00:00:00.000Z"
-  },
-  {
-    "id": "3",
-    "title": "E-Commerce Dashboard",
-    "description": "An analytics dashboard for an online store with real-time sales charts, inventory management, and order tracking built with a React frontend.",
-    "longDescription": "An internal analytics tool built for an online retail operation. The brief was broad: 'we need to see what's happening in the store in real time.' The main challenge was deciding what to surface — there were dozens of possible metrics, and showing the wrong ones would make the dashboard noisy rather than useful.\n\nAfter working through the requirements, the design converged on three primary views: live sales activity, inventory alerts, and order status. Chart.js handles the visualisations, with a custom data-normalisation layer that smooths out the irregular polling intervals from the external inventory API.\n\nThe most technically interesting part was optimistic UI for order status updates. Orders can be edited from the dashboard, and the state machine had to handle concurrent edits from multiple users gracefully, without showing stale data.",
-    "tags": ["React", "Node.js", "PostgreSQL", "Chart.js"],
     "github": "",
     "liveUrl": "",
     "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Dashboard+—+Sales+Overview",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Dashboard+—+Inventory+View",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Dashboard+—+Order+Tracking"
+      "/uploads/1777634177666-image_2026-05-01_164617043.png",
+      "/uploads/1777634194973-image_2026-05-01_164634945.png"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2025-05",
+    "createdAt": "2025-03-01T00:00:00.000Z",
+    "category": "personal",
+    "status": "in-development"
+  },
+  {
+    "id": "1777700000003",
+    "title": "Universal Deep RL Agent for Multi-Scenario CSTR Temperature Control",
+    "description": "A TD3 policy trained across seven actuator configurations for a jacketed continuous stirred-tank reactor, with a Streamlit control dashboard.",
+    "longDescription": "This project is a replication and extension of Martinez et al. (PSE 2021+), applying Twin Delayed DDPG (TD3) to process control of a jacketed continuous stirred-tank reactor (CSTR). The key challenge is that real industrial reactors operate across multiple actuator configurations — different feed lines, bypass setups, or valve combinations — and most RL controllers are trained for a single fixed configuration.\n\nThe solution was a 5-bit scenario mask embedded directly in the state vector, allowing a single policy network to learn seven distinct actuator configurations simultaneously. The agent controls reactor level (H) by adjusting inlet valve opening and product concentration (C_B) by manipulating reactor temperature. Analysis of the manipulated variables identified feed-stream temperature as the dominant control authority.\n\nThe CSTR environment was modeled from first principles: Arrhenius reaction kinetics (k₀ = 1.85×10⁷ h⁻¹, calibrated with PSO), volume and mass balance ODEs, and a Gym-compatible interface. The actor network takes an 8-dimensional state (H, C_B, errors, integrals, derivatives) and outputs two continuous control actions with tanh-bounded outputs. Training ran for 20,000 episodes on a GPU (RTX 4060) with Ornstein-Uhlenbeck exploration noise.\n\nValidation against both paper test scenarios achieved steady-state errors under 0.5% of setpoint. An interactive Streamlit dashboard lets you drag setpoint sliders and watch the trained agent respond in real time across six simultaneous plots.\n\n#dev note: This was the FISAC project given for my Unsupervised intelligence class, and a very frustrating project at that, but I was actually surprised at how simple it was when you break it down, and what's happening on the layer below (thought having to retrain the whole model one day before the submission due to an error was definitely not fun)",
+    "tags": [
+      "Python",
+      "PyTorch",
+      "Reinforcement Learning",
+      "Streamlit",
+      "ML"
+    ],
+    "github": "https://github.com/sushi2dragon/CSTR-Deep-Reinforcement-Learning-Controller",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777616666458-uicps_fisac_final_report--1-.pdf",
+      "/uploads/1777616904088-image_2026-05-01_115823790.png",
+      "/uploads/1777616924788-all_scenarios.png",
+      "/uploads/1777616930215-learning_curve.png",
+      "/uploads/1777616935486-manipulated_variables.png"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2026-04",
+    "createdAt": "2026-04-01T00:00:00.000Z",
+    "category": "academic",
+    "status": "completed"
+  },
+  {
+    "id": "1777700000004",
+    "title": "Guided Tours — WebXR AR Art Explorer",
+    "description": "A browser-based AR app that displays world-anchored 3D info panels when a phone camera recognises a tracked artwork or poster. No app install required.",
+    "longDescription": "Guided Tours is a serverless WebAR experience for museum-style guided tours. Point an Android phone at a recognised artwork and a 3D information card appears below it, anchored in world space — move the phone around and the panel stays fixed relative to the real world. Multiple artworks can be tracked simultaneously, up to four panels at once.\n\nThe tracking layer uses the WebXR Device API's image-tracking feature, which bypasses third-party AR SDKs entirely. The most non-obvious implementation challenge was coordinate system consistency: Three.js's internal reference space is reused for all `getPose()` calls instead of creating a new one, which prevents the subtle drift that appears when coordinate systems diverge across frames. After 10 stabilisation frames, each panel locks its world position — `updatePose()` becomes a no-op unless the tracked image physically moves more than 15cm.\n\nText rendering uses troika-three-text for SDF-based, resolution-independent labels that stay sharp regardless of panel scale or viewing distance. The panel manager runs LRU eviction: when a fifth artwork is detected beyond the MAX_PANELS limit, the oldest panel plays its exit animation and is disposed before the new one activates.\n\nThe app also includes automatic AR based audio descriptions for paintings for maximum accessibility.\n",
+    "tags": [
+      "Three.js",
+      "WebXR",
+      "Vite",
+      "JavaScript",
+      "GeoJSON",
+      "AR",
+      "MindAR"
+    ],
+    "github": "https://github.com/sushi2dragon/guided-tours",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777617260775-image_2026-05-01_120420508.png",
+      "/uploads/1777617277519-image_2026-05-01_120437461.png",
+      "/uploads/1777617291437-image_2026-05-01_120451392.png"
     ],
     "isProprietaryWork": true,
+    "projectDate": "2026-04",
+    "createdAt": "2025-01-01T00:00:00.000Z",
     "category": "professional",
-    "status": "completed",
-    "createdAt": "2024-01-04T00:00:00.000Z"
+    "status": "in-development"
   },
   {
-    "id": "4",
-    "title": "Markdown Note App",
-    "description": "A minimal note-taking app with live markdown preview, local-first storage, tag organisation, and a distraction-free writing mode.",
-    "longDescription": "The problem with most note apps is they want to be your second brain. This one just wants to get out of the way. The design constraint was: every interaction should take fewer than two keystrokes.\n\nStorage is handled entirely in IndexedDB through a thin abstraction layer, which means the app works offline from first load and never touches a server. The sync model is append-only — edits are stored as delta operations rather than full document snapshots, which makes conflict resolution in a future multi-device scenario much simpler.\n\nThe markdown renderer is a custom implementation rather than a library, which sounds excessive but gave precise control over how code blocks, tables, and inline elements render. The live preview updates at 60fps even for large documents by only re-rendering the changed block rather than the full document tree.",
-    "tags": ["React", "TypeScript", "IndexedDB"],
-    "github": "https://github.com/",
+    "id": "1777700000005",
+    "title": "Cricket DRS Outcome Prediction System",
+    "description": "An ML system that converts natural-language match commentary into ball-trajectory features to predict DRS review outcomes and calculate the strategic value of a challenge.",
+    "longDescription": "The Decision Review System is one of the most data-rich aspects of modern cricket, but public ball-tracking data (Hawkeye) is proprietary and closed. This project solves that by building an NLP-to-physics proxy: parsing ball-by-ball commentary text to reconstruct the physical features that determine whether a review succeeds.\n\nThe NLP pipeline uses spaCy for rule-based feature extraction and BERT/RoBERTa-style transformers for probabilistic reconstruction of delivery attributes — pitch coordinates, impact zone, trajectory alignment — from phrases like 'pitching in line, hitting middle stump.' These features feed into an XGBoost/LightGBM ensemble that predicts review success probability, with PyMC3-based Bayesian inference for uncertainty quantification on marginal 'Umpire's Call' decisions.\n\nThe system goes beyond binary classification. A decision-value engine computes the Expected Gain of taking a review using a win-probability-added (WPA) framework: Expected Gain = P(success) × Wicket Value − Review Cost. This gives teams a real-time EV figure for any challenge decision based on match context — over number, wickets in hand, format, and run rate pressure.\n\nAn umpire profiling module tracks behavioral tendencies across sessions: trigger rates, home/away bias, and fatigue metrics measured by session-by-session overturn rates. Everything is served through a FastAPI backend with a Streamlit dashboard for heatmap visualization and contextual query support.\n\n#dev notes: My minor project, if this project is accepted, then I will get my minor degree in data science, no pressure. But actually this is a really interesting project, and not something many people have done yet and have really interesting applications in the field of sports research",
+    "tags": [
+      "Python",
+      "NLP",
+      "XGBoost",
+      "FastAPI",
+      "Streamlit",
+      "BERT"
+    ],
+    "github": "https://github.com/sushi2dragon/Cricket-DRS-Outcome-Prediction-System",
     "liveUrl": "",
     "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Notes+—+Editor+View",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Notes+—+Split+Preview"
+      "/uploads/1777617580748-synopsis_report_final.pdf"
     ],
     "isProprietaryWork": false,
-    "category": "personal",
-    "status": "in-development",
-    "createdAt": "2024-01-05T00:00:00.000Z"
-  },
-  {
-    "id": "5",
-    "title": "Weather CLI Tool",
-    "description": "A terminal utility that fetches and displays weather forecasts with coloured output, location detection, and a 7-day chart drawn in ASCII.",
-    "longDescription": "A command-line weather tool built partly as a utility and partly as an exploration of what terminal UX can look like when you actually care about it. The bar is usually low for CLI aesthetics; the goal here was to see how close you could get to a polished UI without leaving the terminal.\n\nLocation detection uses the system's IP geolocation as a fallback, but the preferred path is a cached location stored in a config file — making subsequent calls instant. The 7-day forecast is rendered as an ASCII bar chart with ANSI colour codes for temperature ranges, which required careful handling of wide characters to keep columns aligned across different terminal widths.\n\nThe most useful feature turned out to be the hourly rain probability graph, shown as a spark line. It's the first thing to check before deciding whether to bring an umbrella.",
-    "tags": ["Python", "API", "CLI"],
-    "github": "https://github.com/",
-    "liveUrl": "",
-    "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Weather+CLI+—+Forecast+Output",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Weather+CLI+—+7-Day+Chart"
-    ],
-    "isProprietaryWork": false,
-    "category": "personal",
-    "status": "completed",
-    "createdAt": "2024-01-06T00:00:00.000Z"
-  },
-  {
-    "id": "6",
-    "title": "Multiplayer Word Game",
-    "description": "A browser-based multiplayer word-guessing game using WebSockets for real-time sync, with room codes, score tracking, and animated reveals.",
-    "longDescription": "A real-time browser game built to explore what a polished multiplayer word game could feel like. The core mechanic is cooperative: players in the same room share a word pool and race to find words before time runs out.\n\nThe multiplayer state is managed with Socket.io. The trickiest part was keeping game state consistent when players join mid-round or lose their connection — the server maintains a single source of truth and sends a full state snapshot on reconnect, rather than trying to replay events.\n\nAnimations were deliberately designed to be snappy rather than elaborate. The letter-reveal effect on correct words uses a CSS stagger animation that feels satisfying without slowing down gameplay. The room code system generates short, memorable codes that avoid visually ambiguous characters (0/O, 1/I/l).",
-    "tags": ["React", "Node.js", "Socket.io", "Express"],
-    "github": "https://github.com/",
-    "liveUrl": "",
-    "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Word+Game+—+Game+Room",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Word+Game+—+Score+Screen"
-    ],
-    "isProprietaryWork": false,
+    "projectDate": "2026-05",
+    "createdAt": "2025-02-01T00:00:00.000Z",
     "category": "academic",
-    "status": "completed",
-    "createdAt": "2024-01-07T00:00:00.000Z"
+    "status": "in-development"
   },
   {
-    "id": "7",
-    "title": "Expense Tracker",
-    "description": "A personal finance tracker with category budgets, monthly breakdowns, CSV import/export, and a clean mobile-first layout.",
-    "longDescription": "Built to replace a complicated spreadsheet that had grown too unwieldy to maintain. The key requirement was that importing data from a bank CSV should be automatic — no manual categorisation for every transaction.\n\nThe import pipeline uses a rules-based categorisation engine: each rule matches transactions by merchant name pattern and assigns a category. Rules are stored locally and can be edited directly in the app. After the first few months of use, roughly 85% of transactions are auto-categorised without manual intervention.\n\nThe mobile layout was designed first, since that's where most expense-checking happens. The desktop view adds a few extra columns and a side-by-side chart view, but the core interactions — adding transactions, checking budgets, reviewing spending — are identical across screen sizes.",
-    "tags": ["React", "TypeScript", "SQLite"],
-    "github": "https://github.com/",
+    "id": "1777700000006",
+    "title": "Node-Based Indoor AR Navigation System",
+    "description": "An end-to-end pipeline that turns 2D building floor maps into a live WebAR indoor navigation experience — map editor, Python graph preprocessor, and mobile WebXR client.",
+    "longDescription": "A full pipeline/workflow to turn any existing 2D building / floor maps into a working 3D AR indoor navigation system.\nThis project contains all the tools needed to go from map data, through graph and path generation, to a Web-based AR experience.\n\nThe three components work as a chain. The Node Creation System is a custom made browser-based 3D map editor — operators can import GeoJSON floor layers, place/generate navigation and directional nodes (stairwells, elevators, floor transitions) along walkable paths, and export everything as EPSG:3857 point features. \n\nThe Python preprocessor takes the exported GeoJSON and builds a k-nearest-neighbour graph using scipy's cKDTree and NetworkX's Dijkstra implementation. It attaches human-readable labels, validates connectivity, and optionally precomputes source-to-destination paths as a compact path-local.json.\n\nThe WebAR client ingests this config and runs the navigation experience in the phone browser. It establishes a WebXR AR session, calibrates a local coordinate origin from the first EPSG:3857 reference point, then places Three.js instanced polyhedra markers along the path in real-world space. As the user walks, proximity checks on the XZ plane advance the route node by node. Directional nodes trigger floor-change prompts for multi-storey buildings. All geometry uses InstancedMesh to keep draw calls flat regardless of path length.\n\n\n#dev notes: Ah yes, the project ive sunk way too much time into, majority of the code of this project was handwritten 😨, the entire pipeline was thoroughly designed to be able to get accurate AR navigation with minimal drift and minimal resource consumption to be able to work on lower end phones. Now comes the real boss: porting this for IOS (those who know, know)",
+    "tags": [
+      "Three.js",
+      "WebXR",
+      "Python",
+      "GeoJSON",
+      "NetworkX"
+    ],
+    "github": "",
     "liveUrl": "",
     "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Expense+Tracker+—+Budget+View",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Expense+Tracker+—+Monthly+Breakdown"
+      "/uploads/1777620202811-image_2026-05-01_125322694.png",
+      "/uploads/1777620263103-image_2026-05-01_125423053.png",
+      "/uploads/1777620283008-whatsapp-video-2026-05-01-at-12-42-23-pm.mp4",
+      "/uploads/1777620297177-whatsapp-video-2026-05-01-at-12-42-24-pm.mp4"
+    ],
+    "isProprietaryWork": true,
+    "projectDate": "2026-02",
+    "createdAt": "2024-08-01T00:00:00.000Z",
+    "category": "professional",
+    "status": "in-development"
+  },
+  {
+    "id": "1777700000007",
+    "title": "Real-Time 3D Reconstruction SLAM",
+    "description": "A visual SLAM implementation in Python that reconstructs a 3D point cloud from monocular video using ORB features, Essential matrix estimation, triangulation, and pose graph optimisation.",
+    "longDescription": "This project implements a complete visual Simultaneous Localisation and Mapping (SLAM) pipeline from scratch in Python, developed as a part of research work at Nakshatra Mapping Solutions.\n\nEach video frame is processed by an ORB feature detector (1000 keypoints per frame). Features are matched against the previous frame using brute-force Hamming distance matching, and RANSAC-based Essential matrix estimation filters out outliers. Camera pose is recovered via `cv2.recoverPose`, and the running pose is accumulated frame by frame using matrix composition.\n\nOnce a relative pose is established, matched inlier keypoints are triangulated into 3D world points via direct linear transform. Points are coloured from the source frame pixels and accumulated into a growing point cloud rendered live using Open3D's PyQt6 viewer.\n\nKeyframe insertion is triggered when enough new points have accumulated since the last keyframe. For loop closure, each incoming frame's descriptors are matched against all keyframe descriptors stored beyond a five-frame buffer — if a match exceeds 50 correspondences, PnP is used to estimate the loop closure transform, and the resulting edge is added to the pose graph. Pose graph optimisation uses scipy's least_squares to minimise translation errors across all graph edges, correcting accumulated drift across the trajectory.",
+    "tags": [
+      "Python",
+      "OpenCV",
+      "Open3D",
+      "SLAM",
+      "3D Reconstruction"
+    ],
+    "github": "",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777630625793-screenshot-2026-05-01-141555.png"
+    ],
+    "isProprietaryWork": true,
+    "projectDate": "2025-06",
+    "createdAt": "2024-09-01T00:00:00.000Z",
+    "category": "professional",
+    "status": "completed"
+  },
+  {
+    "id": "1777700000008",
+    "title": "YoutoSpotify",
+    "description": "A Chrome extension that scrapes the upcoming song queue from a YouTube Mix and automatically queues those tracks on Spotify via Native Messaging and the Spotify Web API.",
+    "longDescription": "A web extension that exacts the songs generated by a youtube mix and adds them to your queue on spotify via chrome native messaging, essentially using youtube as a recommendation algorithm for spotify (please dont sue me youtube)\n\nThe architecture has two halves. A Manifest V3 service worker injects an html scraper content script into active YouTube tabs, which scrapes up to 25 upcoming song titles from the queue DOM panel on a 15-minute alarm cycle. Those titles are sent via Chrome's Native Messaging protocol — a 4-byte little-endian length prefix followed by UTF-8 JSON — to a local Python process.\n\nThe Python native host normalises each title (stripping features, remixes, and noise), searches the Spotify Web API via spotipy, and queues matched tracks in batches of five to avoid flooding the queue. OAuth tokens are cached locally so you only authenticate once. A deduplication window (one hour, persisted to disk) prevents re-queuing tracks that were already added in a recent session.\n\n#Dev notes: Just wanted to see if I could, thought it would be fun, its a pretty well known fact that youtube has a superior recommendation model for music, but I didn't like that it would be sourcing the songs from the music videos which means listening to a lot of non music sections, and spotify premium is cheaper than youtube premium with the student plan, so one day I just figured why not use youtube to feed songs into spotify. Got to learn chrome native messaging during it, so pretty worth it id say\n",
+    "tags": [
+      "Chrome Extension",
+      "Python",
+      "Spotify API",
+      "JavaScript",
+      "chrome native messaging",
+      "chrome dev"
+    ],
+    "github": "https://github.com/sushi2dragon/YouToSpotify",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777622345076-image_2026-05-01_132904577.png"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2026-03",
+    "createdAt": "2024-06-01T00:00:00.000Z",
+    "category": "personal",
+    "status": "completed"
+  },
+  {
+    "id": "1777603066430",
+    "title": "Slides Extractor",
+    "description": "A CLI tool that converts lecture recordings into clean slide images, PowerPoint decks, and PDFs by detecting meaningful frame changes in video.",
+    "longDescription": "A simple tool built to convert long lecture videos into clean, usable study material by automatically extracting slides. Instead of scrubbing through hours of recordings or taking manual screenshots, the tool processes the video and pulls out only the frames where meaningful slide changes occur.\n\nThe core idea is detecting when a slide actually changes, not just when something moves on screen. The pipeline samples frames at a configurable interval, computes frame-difference scores against the last saved slide, and filters out noise — cursor movement, animations, the instructor walking in front of the screen. Perceptual hashing removes near-duplicate frames that slip through the difference threshold.\n\nBorder trimming cleans up captured frames before export. The final output is a set of PNG images organised in a named folder, plus a `.pptx` deck and an optional PDF — formats that can be used directly for revision or shared with others. It's especially useful for recorded classes and online courses where slides are embedded in video rather than shared separately.\n\n\n#Dev notes: Only reason I made this is because I had a professor in third semester who refused to give us the lecture slides, I had just taken a computer vision course the previous summer so i was feeling confident, i figured ill just build a script to capture the slides from the class recordings, would have been usefull, but my proffesor caved and gave us the slides like one day after I finished making this so it never came to much use, who knows, might need it in the future, or might come in handy to someone else",
+    "tags": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Pillow"
+    ],
+    "github": "https://github.com/sushi2dragon/Slides_Extractor",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777603053345-image_2026-05-01_080733012.png"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2024-08",
+    "createdAt": "2024-08-02T00:00:00.000Z",
+    "category": "personal",
+    "status": "completed"
+  },
+  {
+    "id": "1",
+    "title": "Portfolio Website",
+    "description": "This site — a full-stack portfolio with a Three.js particle-network hero, JWT-protected admin CMS, and tag-filtered project grid.",
+    "longDescription": "This portfolio was built from scratch as both a technical exercise and a working showcase. The design goal was something that felt handcrafted rather than templated — a warm amber palette as a deliberate pushback against the cold grey aesthetic common in developer portfolios, with a Caveat font accent and a Three.js particle network in the hero that needs to feel alive without distracting from the content.\n\nThe particle scene was one of the more demanding elements to get right. 120 points with connecting lines drawn between any two within a distance threshold of 22 units, the whole thing running inside a React useEffect with full WebGL context cleanup for strict mode compatibility. Color reads from the data-theme attribute at mount so it adapts to dark/light mode without re-initialising.\n\nThe backend is a lightweight Express server with JWT auth and flat-file JSON storage — deliberately simple, since there's no data requirement that justifies a database. The admin dashboard exposes full project CRUD behind bcrypt-hashed password auth, making it possible to update the portfolio content without touching source code. The Vite dev proxy routes all /api/* requests to Express, so fetch calls work identically in development and production.",
+    "tags": [
+      "React",
+      "Three.js",
+      "Node.js",
+      "Express",
+      "Vite"
+    ],
+    "github": "https://github.com/sushi2dragon/Portfolio",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777630902747-image_2026-05-01_155142467.png"
     ],
     "isProprietaryWork": false,
     "category": "personal",
-    "status": "in-development",
-    "createdAt": "2024-01-08T00:00:00.000Z"
+    "status": "completed",
+    "projectDate": "2026-04",
+    "createdAt": "2025-04-01T00:00:00.000Z"
   },
   {
-    "id": "8",
-    "title": "Dev Blog Engine",
-    "description": "A statically generated blog with MDX support, syntax highlighting, reading time estimates, and an RSS feed. Deployed to the edge.",
-    "longDescription": "The blog started as a simple Markdown setup and evolved into a full MDX pipeline as the content requirements grew. MDX was the right call: being able to embed interactive React components in posts (live code sandboxes, data visualisations, custom callouts) changes what's possible in a technical article.\n\nStatic generation at build time means there's no server to maintain, no database to query, and no cold starts on edge workers. The build time with 60+ posts is under 8 seconds. A preview API route handles draft posts without rebuilding the whole site.\n\nThe RSS feed and sitemap are generated from the same data pipeline as the pages, which means they're never out of sync. Syntax highlighting uses Shiki for accurate language support, including some niche languages (Gleam, Zig) that other highlighters struggle with.",
-    "tags": ["Next.js", "MDX", "TailwindCSS"],
-    "github": "https://github.com/",
+    "id": "1777700000009",
+    "title": "AR Navigation System in Unity",
+    "description": "A Unity AR Foundation app for indoor navigation using image-marker localisation, with a spawned 3D house model, room anchors, and a path-drawing line renderer.",
+    "longDescription": "A Unity-based AR indoor navigation prototype targeting Android, built with AR Foundation and the XR Interaction Toolkit. The core mechanic uses image tracking rather than plane detection or GPS — physical markers placed at key locations (Entrance, rooms) act as localisation anchors.\n\nThe ARNavigationManager scans for tracked images via ARTrackedImageManager. When the Entrance marker is detected, it spawns a 3D floor-plan model in world space relative to the marker's transform, establishing the building coordinate frame. Room markers register as named anchors in a dictionary keyed by marker name. A TMP dropdown populated from the anchor keys lets the user select a destination.\n\nOnce a destination is chosen, a LineRenderer draws a path from the user's current world position to the target anchor — updated each frame as the user moves. The navigation is marker-relative, meaning accuracy depends on physical marker placement rather than accumulated IMU drift, which makes it more reliable in constrained indoor environments than SLAM-based approaches for short-range guidance.\n\nThe project was packaged as an APK (test1.apk) and tested on device. Scripts include a NavigationSimulator for offline path testing without physical hardware, and a NavigationOffsetPathVisualizer for debugging coordinate offsets between the AR world space and the floor model.",
+    "tags": [
+      "Unity",
+      "C#",
+      "AR Foundation",
+      "XR",
+      "Android",
+      "AR"
+    ],
+    "github": "",
     "liveUrl": "",
     "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Blog+—+Post+Listing",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=Blog+—+Article+View"
+      "/uploads/1777630727135-screenshot-2025-10-06-052626.png",
+      "/uploads/1777630735369-screenshot-2025-10-06-052721.png",
+      "/uploads/1777630753847-screenshot-2025-11-09-165057.png"
     ],
     "isProprietaryWork": false,
+    "projectDate": "2025-10",
+    "createdAt": "2024-04-01T00:00:00.000Z",
+    "category": "personal",
+    "status": "completed"
+  },
+  {
+    "id": "1777700000010",
+    "title": "VR Table Tennis",
+    "description": "A VR table tennis training simulator built in Unity with physics-based ball mechanics, paddle interaction, and immersive hand-tracking gameplay.",
+    "longDescription": "A virtual reality table tennis trainer developed in Unity. The project focuses on physical fidelity — the ball follows realistic parabolic trajectories with spin influence, and paddle interaction uses collision geometry calibrations, and carefully set physics parameters to match the feel of a real table tennis experience.\n\nThe trainer game consists of essentially a \"batting cage\" but for table tennis, with three varying levels of difficulty, you have to keep up with the opponent AI in responding to each of the serves. The table and environment are modelled to regulation dimensions so spatial intuition from real play transfers to the VR experience.\n\nHand-tracking input maps controller position and velocity directly to paddle motion each frame, keeping latency as low as possible for responsive feel. The project was packaged and tested as a standalone Unity build and tested with the meta quest 3 at synchron'25\n\n#dev notes: This was really fun to make, Ive always enjoys game dev, its one of my biggest passions, and getting to see the payoff on the day of the expo with so many student, even proffesors enjoying the game, and lining up to play it. Even I dont know how i managed to test responsiveness at home using the unity built in VR simulator, because I dont actually own a VR device, but in the end, it all worked out pretty well, aside from a few little bugs",
+    "tags": [
+      "Unity",
+      "C#",
+      "VR",
+      "XR"
+    ],
+    "github": "https://github.com/sushi2dragon/VRTT",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777623861333-screen-recording-2025-10-19-182106.mp4",
+      "/uploads/1777623897366-screen-recording-2025-11-06-020724.mp4",
+      "/uploads/1777624445436-image_2026-05-01_140405387.png",
+      "/uploads/1777624469230-whatsapp-video-2026-05-01-at-2-02-10-pm.mp4",
+      "/uploads/1777624485565-whatsapp-video-2026-05-01-at-2-02-10-pm--1-.mp4",
+      "/uploads/1777630268506-image_2026-05-01_154108167.png"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2024-03",
+    "createdAt": "2024-03-01T00:00:00.000Z",
     "category": "academic",
-    "status": "completed",
-    "createdAt": "2024-01-09T00:00:00.000Z"
+    "status": "completed"
   },
   {
-    "id": "9",
-    "title": "REST API Boilerplate",
-    "description": "A production-ready Express boilerplate with JWT auth, role-based access control, rate limiting, request validation, and full OpenAPI docs.",
-    "longDescription": "A production-ready starting point for Node/Express APIs, extracted from three different client projects where the same infrastructure kept being rebuilt from scratch. The goal was to make the right defaults hard to deviate from accidentally.\n\nThe auth system implements JWT with refresh token rotation — access tokens are short-lived (15 minutes), refresh tokens are long-lived but single-use and stored in an httpOnly cookie. This setup is a reasonable trade-off between security and developer ergonomics without requiring a session store.\n\nRole-based access control is implemented as a middleware factory that accepts a list of allowed roles, making it easy to protect routes at the Express level. The OpenAPI spec is generated from route handlers using JSDoc annotations, so the docs stay in sync with the implementation without a separate generation step.",
-    "tags": ["Node.js", "Express", "PostgreSQL", "REST"],
-    "github": "https://github.com/",
+    "id": "1777700000011",
+    "title": "Custom Handheld Metal Detector",
+    "description": "A custom-designed PCB metal detector with a KiCad schematic, hand-etched board, and Arduino-based signal processing for landmine detection research.",
+    "longDescription": "This project presents a compact, handheld metal detection system built using an Arduino-based circuit. The device is designed to identify the presence of nearby metallic objects and provide immediate feedback through LEDs and a buzzer. It uses a simple, low-power design powered by a portable power bank via the Arduino board, making it practical for demonstrations and real-world portability. The system also includes basic differentiation between types of metals based on how they influence the sensor’s behavior.\nThe working principle is based on electromagnetic induction. A coil generates a magnetic field when current flows through it, and any nearby metal object alters this field by changing the coil’s inductance. The circuit measures these small changes indirectly by sending pulses through the coil, capturing the resulting signal on a capacitor, and reading it using the Arduino’s analog input. By repeatedly sampling and averaging the readings, the system detects even minor variations and compares them to a baseline to determine when metal is present.\n\n#dev notes: First ever mini project in college, what originally started as a long range landmine detection system turned into a super portable handheld metal detector, with dimensions of 25x7x4 cm, the electical principals behind the working are actually really interesting, but they seem so intimidating at first, thanks to electroBOOM on youtube, I actually understood the inner working of the device which helped greatly in presenting it at Synchron'24",
+    "tags": [
+      "Arduino",
+      "KiCad",
+      "PCB Design",
+      "Embedded Systems",
+      "C",
+      "Electronics"
+    ],
+    "github": "https://github.com/sushi2dragon/SensorTech-Miniproject/",
     "liveUrl": "",
     "screenshots": [
-      "https://placehold.co/1200x675/1a1108/e07b39?text=API+Boilerplate+—+OpenAPI+Docs",
-      "https://placehold.co/1200x675/1a1108/e07b39?text=API+Boilerplate+—+Auth+Flow"
+      "/uploads/1777628366288-image_2026-05-01_150926127.png",
+      "/uploads/1777628426450-image_2026-05-01_151026420.png"
     ],
     "isProprietaryWork": false,
+    "projectDate": "2024-10",
+    "createdAt": "2024-02-01T00:00:00.000Z",
+    "category": "academic",
+    "status": "completed"
+  },
+  {
+    "id": "1777700000012",
+    "title": "Line Following Robot using 8051",
+    "description": "A line-following robot controlled by an 8051 microcontroller with IR sensors, implementing real-time PID-based motor corrections in embedded C.",
+    "longDescription": "A line-following robot built around the Intel 8051 microcontroller as part of embedded systems coursework. The robot tracks a black line on a white surface using an array of IR reflectance sensors, and adjusts differential motor drive in real time to keep the robot centred.\n\nThe 8051 reads digital sensor outputs via its I/O ports and runs a proportional-integral-derivative (PID) control loop in firmware. The error term is computed from the sensor array's lateral offset from the line, and the PID output drives the left and right motor velocities independently through an H-bridge motor driver. Tuning the PID gains required iterative testing on curves, junctions, and varying line widths.\n\nThe firmware is written in embedded C and compiled for the 8051 instruction set. Timer interrupts handle the motor PWM generation, keeping the control loop decoupled from the PWM duty cycle updates. The robot handles straight sections, curves, and 90-degree turns reliably.",
+    "tags": [
+      "8051",
+      "Embedded C",
+      "Embedded Systems",
+      "Robotics"
+    ],
+    "github": "",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777630988259-whatsapp-video-2026-05-01-at-11-24-14-am.mp4",
+      "/uploads/1777631248330-image_2026-05-01_155727469.png"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2025-04",
+    "createdAt": "2023-11-01T00:00:00.000Z",
+    "category": "academic",
+    "status": "completed"
+  },
+  {
+    "id": "1777700000013",
+    "title": "Report Card Management System",
+    "description": "A console-based student report card manager built in C++ as a DSA project, using linked lists and binary search trees for efficient record storage and retrieval.",
+    "longDescription": "A data structures academic project implementing a report card management system for a school or college context. The system handles student records, subject grades, and semester-level reporting through a console interface.\n\nThe core data structure is a linked list of student records, each node containing student ID, name, and a nested structure of subject grades. Binary search tree indexing on student ID enables O(log n) lookup without sorting the full list on every query. Grade computation — weighted averages, pass/fail determination, class rank — is implemented as traversal operations over the tree.\n\nFeatures include adding, updating, and deleting student records; printing individual report cards; generating class-wide grade summaries sorted by rank; and persisting records to a file using binary serialisation for session continuity. The project was built as part of the Data Structures and Algorithms coursework at MIT Manipal.",
+    "tags": [
+      "C++",
+      "Data Structures",
+      "Algorithms"
+    ],
+    "github": "https://github.com/sushi2dragon/DSA-Miniproject",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777629012753-image_2026-05-01_152012603.png",
+      "/uploads/1777632645601-test_output.pdf"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2024-09",
+    "createdAt": "2023-10-01T00:00:00.000Z",
+    "category": "academic",
+    "status": "completed"
+  },
+  {
+    "id": "1777700000014",
+    "title": "PCA & K-Means from Scratch",
+    "description": "Python implementations of Principal Component Analysis and K-Means clustering built from first principles using only NumPy, applied to real datasets.",
+    "longDescription": "A machine learning fundamentals project implementing both Principal Component Analysis and K-Means clustering from scratch in Python — no scikit-learn, only NumPy — to understand the algorithms at a mathematical level rather than treating them as black-box library calls.\n\nThe PCA implementation computes the covariance matrix of the input data, performs eigendecomposition to find principal components, and projects the data onto the top-k eigenvectors. Explained variance ratios are computed to guide component selection. The implementation is verified against scikit-learn's output on the same datasets.\n\nThe K-Means implementation initialises cluster centroids using K-Means++ (distance-weighted random seeding for better convergence), then iterates assignment and centroid update steps until convergence within a configurable tolerance. Within-cluster sum of squares and silhouette scores are computed to evaluate cluster quality across different values of k.\n\nBoth implementations are applied to real datasets with visualization of the PCA projection space and K-Means cluster boundaries. The notebook also explores the relationship between the two — using PCA to reduce dimensionality before clustering, and comparing cluster separation in original vs. projected space.\n\n#dev notes: one of the first projects I made in college, back when I was part of the junior taskphase in MRM, didn't realize it then but learning these concepts and implementing them from scratch without the use of any libraries/tools actually helped me greatly with my future ML projects and pushed my skillset ahead",
+    "tags": [
+      "Python",
+      "NumPy",
+      "Machine Learning",
+      "PCA",
+      "K-Means",
+      "ML",
+      "Pandas"
+    ],
+    "github": "https://github.com/sushi2dragon/MRM",
+    "liveUrl": "",
+    "screenshots": [
+      "/uploads/1777629585306-image_2026-05-01_152945263.png",
+      "/uploads/1777629594384-image_2026-05-01_152954337.png",
+      "/uploads/1777629615452-image_2026-05-01_153015416.png",
+      "/uploads/1777629744450-sarthak_dravid_researchai_8_23_12_2023--1-.pdf"
+    ],
+    "isProprietaryWork": false,
+    "projectDate": "2023-11",
+    "createdAt": "2024-05-01T00:00:00.000Z",
     "category": "personal",
-    "status": "completed",
-    "createdAt": "2024-01-10T00:00:00.000Z"
+    "status": "completed"
   }
 ]

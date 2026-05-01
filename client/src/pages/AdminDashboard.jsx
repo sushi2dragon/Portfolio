@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TagInput from '../components/TagInput/TagInput'
+import { API_BASE, resolveUrl } from '../config'
 import './Admin.css'
 
 /* ── helpers ────────────────────────────────────────────── */
@@ -15,6 +16,7 @@ const EMPTY_PROJECT = {
   isProprietaryWork: false,
   category: 'personal',
   status: 'completed',
+  projectDate: '',
 }
 
 const EMPTY_CERT = {
@@ -37,8 +39,19 @@ const EMPTY_SITE = {
   social: { github: '', linkedin: '', whatsapp: '', email: '' },
 }
 
-/* ── ScreenshotManager ──────────────────────────────────── */
-function ScreenshotManager({ value = [], onChange, token }) {
+const normalizeTag = (value = '') => value.trim().toLowerCase()
+
+/* ── GalleryManager ─────────────────────────────────────── */
+function getItemType(url = '') {
+  const u = url.toLowerCase().split('?')[0]
+  if (/youtube\.com|youtu\.be/.test(u)) return 'video'
+  if (/vimeo\.com/.test(u)) return 'video'
+  if (/\.(mp4|webm|ogg|mov)$/.test(u)) return 'video'
+  if (/\.pdf$/.test(u)) return 'pdf'
+  return 'image'
+}
+
+function GalleryManager({ value = [], onChange, token }) {
   const [urlInput, setUrlInput] = useState('')
   const fileRef = useRef(null)
   const [uploading, setUploading] = useState(false)
@@ -55,26 +68,26 @@ function ScreenshotManager({ value = [], onChange, token }) {
     if (!file) return
     setUploading(true)
     const fd = new FormData()
-    fd.append('image', file)
+    fd.append('file', file)
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch(`${API_BASE}/api/upload/gallery`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
       })
       const { url } = await res.json()
-      onChange([...value, url])
+      onChange([...value, resolveUrl(url)])
     } catch {/* ignore */}
     setUploading(false)
     e.target.value = ''
   }
 
   return (
-    <div className="screenshot-manager">
-      <div className="screenshot-manager__add">
+    <div className="gallery-manager">
+      <div className="gallery-manager__add">
         <input
-          className="form-input screenshot-manager__url"
-          placeholder="Paste screenshot URL…"
+          className="form-input gallery-manager__url"
+          placeholder="Paste URL (image, video, PDF, or YouTube/Vimeo link)…"
           value={urlInput}
           onChange={e => setUrlInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addUrl())}
@@ -88,22 +101,41 @@ function ScreenshotManager({ value = [], onChange, token }) {
         >
           {uploading ? 'Uploading…' : '⬆ Upload'}
         </button>
-        <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
+        <input ref={fileRef} type="file" accept="image/*,video/*,.pdf" style={{ display: 'none' }} onChange={handleFile} />
       </div>
 
       {value.length > 0 && (
-        <div className="screenshot-manager__thumbs">
-          {value.map((src, i) => (
-            <div key={i} className="screenshot-thumb">
-              <img src={src} alt={`screenshot ${i + 1}`} className="screenshot-thumb__img" />
-              <button
-                type="button"
-                className="screenshot-thumb__remove"
-                onClick={() => onChange(value.filter((_, idx) => idx !== i))}
-                aria-label="Remove screenshot"
-              >✕</button>
-            </div>
-          ))}
+        <div className="gallery-manager__thumbs">
+          {value.map((src, i) => {
+            const type = getItemType(src)
+            return (
+              <div key={i} className="gallery-item">
+                {type === 'image' ? (
+                  <img src={src} alt={`gallery item ${i + 1}`} className="gallery-item__img" />
+                ) : type === 'pdf' ? (
+                  <div className="gallery-item__placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="20" height="20">
+                      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    PDF
+                  </div>
+                ) : (
+                  <div className="gallery-item__placeholder">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                      <polygon points="5,3 19,12 5,21"/>
+                    </svg>
+                    Video
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className="gallery-item__remove"
+                  onClick={() => onChange(value.filter((_, idx) => idx !== i))}
+                  aria-label="Remove item"
+                >✕</button>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
@@ -122,13 +154,13 @@ function PortraitUploader({ value, onChange, token }) {
     const fd = new FormData()
     fd.append('image', file)
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch(`${API_BASE}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
       })
       const { url } = await res.json()
-      onChange(url)
+      onChange(resolveUrl(url))
     } catch {/* ignore */}
     setUploading(false)
     e.target.value = ''
@@ -178,13 +210,13 @@ function ResumeUploader({ value, onChange, token }) {
     const fd = new FormData()
     fd.append('resume', file)
     try {
-      const res = await fetch('/api/upload/resume', {
+      const res = await fetch(`${API_BASE}/api/upload/resume`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
       })
       const data = await res.json()
-      if (res.ok && data.url) onChange(data.url)
+      if (res.ok && data.url) onChange(resolveUrl(data.url))
     } catch {/* ignore */}
     setUploading(false)
     e.target.value = ''
@@ -223,6 +255,10 @@ export default function AdminDashboard() {
   const [form, setForm] = useState(EMPTY_PROJECT)
   const [editId, setEditId] = useState(null)
   const [projectLoading, setProjectLoading] = useState(false)
+  const [generatedTags, setGeneratedTags] = useState([])
+  const [tagSuggesting, setTagSuggesting] = useState(false)
+  const [tagError, setTagError] = useState('')
+  const [tagWarnings, setTagWarnings] = useState([])
 
   // ── Site settings state ──
   const [siteForm, setSiteForm] = useState(EMPTY_SITE)
@@ -242,11 +278,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!token) { navigate('/admin'); return }
     // Load projects
-    fetch('/api/projects').then(r => r.json()).then(setProjects)
+    fetch(`${API_BASE}/api/projects`).then(r => r.json()).then(setProjects)
     // Load certifications
-    fetch('/api/certifications').then(r => r.json()).then(setCerts).catch(() => {})
+    fetch(`${API_BASE}/api/certifications`).then(r => r.json()).then(setCerts).catch(() => {})
     // Load site settings
-    fetch('/api/site').then(r => r.json()).then(data => {
+    fetch(`${API_BASE}/api/site`).then(r => r.json()).then(data => {
       setSiteForm({
         name: data.name || '',
         greeting: data.greeting || '',
@@ -268,17 +304,25 @@ export default function AdminDashboard() {
         },
       })
     })
-  }, [])
+  }, [navigate, token])
 
   const authHeaders = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
+  const resetTagSuggestionState = () => {
+    setGeneratedTags([])
+    setTagSuggesting(false)
+    setTagError('')
+    setTagWarnings([])
+  }
+  const canSuggestTags = Boolean(form.description.trim() && form.github.trim() && form.screenshots.length > 0)
 
   /* ── Project handlers ── */
   const setField = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.value }))
   const setCheck = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.checked }))
 
   const handleNewProject = () => {
+    resetTagSuggestionState()
     setForm(EMPTY_PROJECT)
     setEditId(null)
     setShowForm(true)
@@ -286,6 +330,7 @@ export default function AdminDashboard() {
   }
 
   const handleEdit = (p) => {
+    resetTagSuggestionState()
     setEditId(p.id)
     setForm({
       title: p.title || '',
@@ -298,12 +343,14 @@ export default function AdminDashboard() {
       isProprietaryWork: p.isProprietaryWork || false,
       category: p.category || 'personal',
       status: p.status || 'completed',
+      projectDate: p.projectDate || '',
     })
     setShowForm(true)
     setTimeout(() => document.querySelector('.admin-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
   }
 
   const handleCancelForm = () => {
+    resetTagSuggestionState()
     setShowForm(false)
     setEditId(null)
     setForm(EMPTY_PROJECT)
@@ -313,7 +360,7 @@ export default function AdminDashboard() {
     e.preventDefault()
     setProjectLoading(true)
     const body = { ...form }
-    const url = editId ? `/api/projects/${editId}` : '/api/projects'
+    const url = editId ? `${API_BASE}/api/projects/${editId}` : `${API_BASE}/api/projects`
     const method = editId ? 'PUT' : 'POST'
     const res = await fetch(url, { method, headers: authHeaders, body: JSON.stringify(body) })
     if (res.status === 401) { navigate('/admin'); return }
@@ -329,9 +376,64 @@ export default function AdminDashboard() {
     setProjectLoading(false)
   }
 
+  const handleSuggestTags = async () => {
+    if (!canSuggestTags || tagSuggesting) return
+
+    setTagSuggesting(true)
+    setTagError('')
+    setTagWarnings([])
+
+    try {
+      const res = await fetch(`${API_BASE}/api/projects/tags/suggest`, {
+        method: 'POST',
+        headers: authHeaders,
+        body: JSON.stringify({
+          description: form.description,
+          longDescription: form.longDescription,
+          github: form.github,
+          screenshots: form.screenshots,
+          existingTags: form.tags,
+        }),
+      })
+
+      if (res.status === 401) { navigate('/admin'); return }
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Unable to generate tags.')
+
+      const existingNorm = new Set(form.tags.map(normalizeTag))
+      const freshSuggestions = (data.suggestions || []).filter((tag) => !existingNorm.has(normalizeTag(tag)))
+
+      if (freshSuggestions.length > 0) {
+        setForm((current) => ({ ...current, tags: [...freshSuggestions, ...current.tags] }))
+        setGeneratedTags((current) => {
+          const seen = new Set()
+          const next = []
+          for (const tag of [...freshSuggestions, ...current]) {
+            const normalized = normalizeTag(tag)
+            if (!normalized || seen.has(normalized)) continue
+            seen.add(normalized)
+            next.push(tag)
+          }
+          return next
+        })
+      }
+
+      const warnings = [...(data.warnings || [])]
+      if (freshSuggestions.length === 0) {
+        warnings.push('No new allowed tags were found from the current description and repository sample.')
+      }
+      setTagWarnings(warnings)
+    } catch (err) {
+      setTagError(err.message)
+    } finally {
+      setTagSuggesting(false)
+    }
+  }
+
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this project?')) return
-    const res = await fetch(`/api/projects/${id}`, { method: 'DELETE', headers: authHeaders })
+    const res = await fetch(`${API_BASE}/api/projects/${id}`, { method: 'DELETE', headers: authHeaders })
     if (res.status === 401) { navigate('/admin'); return }
     setProjects(ps => ps.filter(p => p.id !== id))
     showMsg('Deleted.')
@@ -350,7 +452,7 @@ export default function AdminDashboard() {
   const handleSiteSubmit = async (e) => {
     e.preventDefault()
     setSiteLoading(true)
-    const res = await fetch('/api/site', {
+    const res = await fetch(`${API_BASE}/api/site`, {
       method: 'PUT',
       headers: authHeaders,
       body: JSON.stringify(siteForm),
@@ -390,7 +492,7 @@ export default function AdminDashboard() {
   const handleCertSubmit = async (e) => {
     e.preventDefault()
     setCertLoading(true)
-    const url = editCertId ? `/api/certifications/${editCertId}` : '/api/certifications'
+    const url = editCertId ? `${API_BASE}/api/certifications/${editCertId}` : `${API_BASE}/api/certifications`
     const method = editCertId ? 'PUT' : 'POST'
     const res = await fetch(url, { method, headers: authHeaders, body: JSON.stringify(certForm) })
     if (res.status === 401) { navigate('/admin'); return }
@@ -410,7 +512,7 @@ export default function AdminDashboard() {
 
   const handleDeleteCert = async (id) => {
     if (!window.confirm('Delete this certification?')) return
-    const res = await fetch(`/api/certifications/${id}`, { method: 'DELETE', headers: authHeaders })
+    const res = await fetch(`${API_BASE}/api/certifications/${id}`, { method: 'DELETE', headers: authHeaders })
     if (res.status === 401) { navigate('/admin'); return }
     setCerts(cs => cs.filter(c => c.id !== id))
     showMsg('Deleted.')
@@ -519,12 +621,33 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Technologies</label>
+                  <div className="admin-form-label-row">
+                    <label className="form-label">Technologies</label>
+                    <button
+                      type="button"
+                      className="btn btn-outline btn-sm admin-ai-btn"
+                      onClick={handleSuggestTags}
+                      disabled={!canSuggestTags || tagSuggesting}
+                    >
+                      {tagSuggesting ? 'Generating...' : 'Auto-assign tags'}
+                    </button>
+                  </div>
                   <TagInput
                     value={form.tags}
                     onChange={(tags) => setForm(f => ({ ...f, tags }))}
-                    placeholder="Add tech tags…"
+                    onRemoveTag={(tag) => setGeneratedTags(current => current.filter(item => normalizeTag(item) !== normalizeTag(tag)))}
+                    highlightedTags={generatedTags}
+                    placeholder="Add tech tags..."
                   />
+                  <p className="form-hint">Requires description, GitHub URL, and at least one screenshot.</p>
+                  {tagError && <p className="admin-inline-error">{tagError}</p>}
+                  {tagWarnings.length > 0 && (
+                    <div className="admin-inline-note">
+                      {tagWarnings.map((warning) => (
+                        <p key={warning}>{warning}</p>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-row">
@@ -542,6 +665,17 @@ export default function AdminDashboard() {
                       <option value="completed">Completed</option>
                       <option value="in-development">In Development</option>
                     </select>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">
+                      Project Date <span className="form-hint">(month &amp; year)</span>
+                    </label>
+                    <input
+                      type="month"
+                      className="form-input"
+                      value={form.projectDate}
+                      onChange={setField('projectDate')}
+                    />
                   </div>
                 </div>
 
@@ -567,8 +701,8 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Screenshots</label>
-                  <ScreenshotManager
+                  <label className="form-label">Gallery <span className="form-hint">(images, videos, PDFs, YouTube / Vimeo links)</span></label>
+                  <GalleryManager
                     value={form.screenshots}
                     onChange={(screenshots) => setForm(f => ({ ...f, screenshots }))}
                     token={token}

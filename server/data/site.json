@@ -4,11 +4,11 @@
   "tagline": "I build things.",
   "subtitle": "Student, Developer, and Full-time nerd. Im passionate about absorbing as much knowledge as I can and applying it to build apps and experiences to improve QoL.",
   "portrait": "",
-  "resumeUrl": "/uploads/1777599468730-sarthak_230961074.pdf",
+  "resumeUrl": "/uploads/1777631955867-sarthak_dravid_cv.pdf",
   "resumePreview": "",
   "about": {
-    "bio": "Hi, I'm Sarthak — a Cyber-Physical Systems student working across software, data, and real-world systems.\n\nMy experience spans spatial computing, geospatial tech, and computer vision. I'm particularly interested in understanding how systems behave—where they break, why they fail, and how they can be improved.\n\nI've co-founded a startup focused on interactive geospatial experiences, and much of my work is driven by experimentation: using existing technologies to build practical, useful applications. That might take the form of AR/VR systems for indoor navigation, real-time 3D reconstruction tools, PC workflow utilities, or smaller projects that reduce friction in everyday tasks.\n\nI'm interested in computer vision, data systems, AR/VR, systems design, and full-stack development.",
-    "currentProject": "E-Commerce Dashboard",
+    "bio": "Hi, I'm Sarthak — a Cyber-Physical Systems student working across software, data, and real-world systems.\n\nMy experience spans spatial computing, geospatial tech, and computer vision. I'm particularly interested in understanding how systems behave—where they break, why they fail, and how they can be improved.\n\nI co-founded a startup focused on interactive geospatial experiences.Much of my work is driven by experimentation: using existing technologies to build practical, useful applications. That might take the form of AR/VR systems for indoor navigation, real-time 3D reconstruction tools, PC workflow utilities, or smaller projects that reduce friction in everyday tasks.\n\nI'm interested in computer vision, data systems, AR/VR, systems design, and full-stack development.",
+    "currentProject": "PC Snapshot",
     "skills": [
       "Python",
       "C++",
@@ -19,15 +19,18 @@
       "React",
       "Node.js",
       "Arduino",
-      "Three.js"
+      "Three.js",
+      "JavaScript",
+      "C#",
+      "WebAR"
     ],
-    "currentProjectId": "3"
+    "currentProjectId": "1777700000002"
   },
   "social": {
-    "github": "https://github.com/",
-    "linkedin": "https://linkedin.com/in/",
+    "github": "https://github.com/sushi2dragon",
+    "linkedin": "https://www.linkedin.com/in/sarthak-dravid-8783b72b8/",
     "instagram": "https://instagram.com/",
-    "email": "your@email.com",
-    "whatsapp": ""
+    "email": "sarthak.dravid2021@gmail.com",
+    "whatsapp": "https://wa.me/917674918895"
   }
 }

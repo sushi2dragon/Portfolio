@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: rgba(34, 22, 8, 0.72);
+  background: var(--bg-card);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);

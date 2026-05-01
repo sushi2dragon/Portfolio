@@ -1,42 +1,56 @@
 [
   {
     "id": "1",
-    "name": "Machine Learning Specialization",
+    "name": "Python for Data Analysis: Pandas & NumPy",
     "issuer": "Coursera",
     "issuerDomain": "coursera.org",
-    "date": "2024-03",
-    "credentialUrl": ""
+    "date": "",
+    "credentialUrl": "https://www.coursera.org/account/accomplishments/verify/2SDOXY5RISYX",
+    "issuerLogo": ""
   },
   {
     "id": "2",
-    "name": "MATLAB Onramp",
+    "name": "Wireless Communications Onramp",
     "issuer": "MathWorks",
     "issuerDomain": "mathworks.com",
-    "date": "2023-11",
-    "credentialUrl": ""
+    "date": "",
+    "credentialUrl": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=c8543d9e-a3c3-4301-a250-0263ea3ef51b&",
+    "issuerLogo": ""
   },
   {
     "id": "3",
-    "name": "IBM Data Science Professional Certificate",
-    "issuer": "IBM",
-    "issuerDomain": "ibm.com",
-    "date": "2023-08",
-    "credentialUrl": ""
+    "name": "Signal Processing Onramp",
+    "issuer": "MathWorks",
+    "issuerDomain": "mathworks.com",
+    "date": "",
+    "credentialUrl": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=e5c23c7d-aa7b-4ae9-abb0-84bb6a8c2b5c&",
+    "issuerLogo": ""
   },
   {
     "id": "4",
-    "name": "Deep Learning Specialization",
-    "issuer": "DeepLearning.AI",
-    "issuerDomain": "deeplearning.ai",
-    "date": "2024-06",
-    "credentialUrl": ""
+    "name": "Machine Learning for Data Science Projects",
+    "issuer": "IBM",
+    "issuerDomain": "ibm.com",
+    "date": "",
+    "credentialUrl": "https://www.credly.com/badges/f70e2ff3-3fd5-437f-8f9b-954d740f2591",
+    "issuerLogo": ""
   },
   {
     "id": "5",
-    "name": "AWS Cloud Practitioner Essentials",
-    "issuer": "Amazon Web Services",
-    "issuerDomain": "aws.amazon.com",
-    "date": "2024-01",
-    "credentialUrl": ""
+    "name": "Exploratory Data Analysis",
+    "issuer": "Johns Hopkins University",
+    "issuerDomain": "jhu.edu",
+    "date": "",
+    "credentialUrl": "https://coursera.org/share/a3d015516e360026c342bb02ddc06f13",
+    "issuerLogo": ""
+  },
+  {
+    "id": "6",
+    "name": "R Programming",
+    "issuer": "Johns Hopkins University",
+    "issuerDomain": "jhu.edu",
+    "date": "",
+    "credentialUrl": "https://coursera.org/share/212eb38312f52316e53b3f1d9b88c8b9",
+    "issuerLogo": ""
   }
 ]

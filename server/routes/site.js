@@ -1,29 +1,35 @@
 const router = require('express').Router()
-const fs = require('fs')
-const path = require('path')
 const requireAuth = require('../middleware/auth')
+const Site = require('../models/Site')
 
-const SITE_FILE = path.join(__dirname, '../data/site.json')
-
-const read = () => JSON.parse(fs.readFileSync(SITE_FILE, 'utf8'))
-const write = (data) => fs.writeFileSync(SITE_FILE, JSON.stringify(data, null, 2))
-
-// Public — frontend reads this
-router.get('/', (req, res) => {
-  res.json(read())
+router.get('/', async (req, res) => {
+  try {
+    const site = await Site.findOne({}).lean()
+    res.json(site || {})
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
-// Admin only — deep merge to avoid wiping nested keys
-router.put('/', requireAuth, (req, res) => {
-  const current = read()
-  const updated = {
-    ...current,
-    ...req.body,
-    about: { ...current.about, ...(req.body.about || {}) },
-    social: { ...current.social, ...(req.body.social || {}) },
+router.put('/', requireAuth, async (req, res) => {
+  try {
+    const current = await Site.findOne({}).lean() || {}
+    const updated = {
+      ...current,
+      ...req.body,
+      about: { ...current.about, ...(req.body.about || {}) },
+      social: { ...current.social, ...(req.body.social || {}) },
+    }
+    delete updated._id
+    const site = await Site.findOneAndUpdate(
+      {},
+      { $set: updated },
+      { new: true, upsert: true }
+    ).lean()
+    res.json(site)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-  write(updated)
-  res.json(updated)
 })
 
 module.exports = router

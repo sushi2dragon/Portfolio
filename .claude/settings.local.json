@@ -4,7 +4,8 @@
       "Bash(npm --version)",
       "Bash(npm create *)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(node -e \"const data = require\\('./server/data/projects.json'\\); console.log\\('Projects loaded:', data.length\\); data.forEach\\(p => console.log\\(' -', p.title, '|', p.category, '|', p.status, '|', p.projectDate\\)\\);\")"
     ]
   }
 }

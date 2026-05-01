@@ -36,6 +36,16 @@
   white-space: nowrap;
 }
 
+.tag-input__chip--generated {
+  background: rgba(131, 190, 255, 0.14);
+  border-color: rgba(131, 190, 255, 0.36);
+  color: #83beff;
+}
+
+.tag-input__chip--generated .tag-input__chip-remove {
+  color: #83beff;
+}
+
 .tag-input__chip-remove {
   background: none;
   border: none;

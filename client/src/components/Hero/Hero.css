@@ -106,93 +106,144 @@
   transition: filter 0.38s ease, transform 0.38s ease, opacity 0.38s ease;
 }
 
-.resume-card__preview-image,
-.resume-card__preview-pdf-shell {
+.resume-card__preview-image {
   width: 100%;
   height: 100%;
   display: block;
-}
-
-.resume-card__preview-image {
   object-fit: cover;
   object-position: center top;
 }
 
-.resume-card__preview-pdf-shell {
+/* ── Document mockup ─────────────────────────── */
+.resume-doc {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #f5ede0, #ede0cc);
+  padding: 1.1rem 1.15rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
   overflow: hidden;
-  background: #fff;
 }
 
-.resume-card__preview-pdf {
-  border: 0;
-  background: #fff;
-  pointer-events: none;
-  width: calc(100% + 24px);
-  height: calc(100% + 8px);
-  margin-right: -24px;
-  margin-bottom: -8px;
-  transform: scale(1.01);
-  transform-origin: top left;
+.resume-doc__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.resume-doc__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a0f06;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.resume-doc__tagline {
+  font-size: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  color: #7a4f1e;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.resume-doc__contacts {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.15rem;
+  align-items: center;
+}
+
+.resume-doc__contacts span {
+  font-size: 0.52rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #a06828;
+  letter-spacing: 0.04em;
+}
+
+.resume-doc__divider {
+  height: 1px;
+  background: rgba(26, 15, 6, 0.25);
+  margin: 0.1rem 0;
+}
+
+.resume-doc__divider--light {
+  background: rgba(26, 15, 6, 0.1);
+}
+
+.resume-doc__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.resume-doc__section-label {
+  font-size: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c07030;
+}
+
+.resume-doc__entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  margin-bottom: 0.2rem;
+}
+
+.resume-doc__entry-title {
+  display: block;
+  height: 7px;
+  border-radius: 2px;
+  background: rgba(26, 15, 6, 0.28);
+}
+
+.resume-doc__entry-sub {
+  display: block;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(160, 104, 40, 0.35);
+  margin-bottom: 0.1rem;
+}
+
+.resume-doc__line {
+  display: block;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(26, 15, 6, 0.13);
+}
+
+.resume-doc__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+}
+
+.resume-doc__skills span {
+  font-size: 0.48rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.18rem 0.42rem;
+  border-radius: 2px;
+  background: rgba(192, 112, 48, 0.15);
+  color: #8b4e10;
+  border: 1px solid rgba(192, 112, 48, 0.3);
 }
 
 .resume-card__preview-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 24%, rgba(224, 123, 57, 0.08), transparent 28%),
-    linear-gradient(180deg, rgba(20, 12, 6, 0.56), rgba(15, 10, 5, 0.88));
+    radial-gradient(circle at 50% 20%, rgba(224, 123, 57, 0.06), transparent 60%),
+    linear-gradient(180deg, rgba(18, 10, 4, 0.42) 0%, rgba(12, 7, 3, 0.72) 100%);
 }
 
-.resume-card--document .resume-card__preview-overlay {
-  background:
-    linear-gradient(180deg, rgba(20, 12, 6, 0.5), rgba(15, 10, 5, 0.82)),
-    linear-gradient(90deg, rgba(224, 123, 57, 0.03), transparent 35%, transparent 65%, rgba(224, 123, 57, 0.03));
-}
-
-.resume-card--fallback .resume-card__preview {
-  background:
-    radial-gradient(circle at 30% 20%, rgba(224, 123, 57, 0.16), transparent 30%),
-    radial-gradient(circle at 70% 70%, rgba(224, 123, 57, 0.08), transparent 22%),
-    linear-gradient(135deg, rgba(34, 22, 8, 0.95), rgba(18, 12, 6, 0.92));
-  filter: blur(0);
-  opacity: 1;
-  transform: scale(1);
-}
-
-.resume-card__fallback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1.25rem;
-}
-
-.resume-card__fallback-flag {
-  align-self: flex-start;
-  margin-bottom: 1rem;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-}
-
-.resume-card__fallback-lines {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.resume-card__fallback-lines span {
-  display: block;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(224, 123, 57, 0.18), rgba(224, 123, 57, 0.04));
-}
-
-.resume-card__fallback-lines span:nth-child(1) { width: 86%; }
-.resume-card__fallback-lines span:nth-child(2) { width: 68%; }
-.resume-card__fallback-lines span:nth-child(3) { width: 78%; }
-.resume-card__fallback-lines span:nth-child(4) { width: 58%; }
 
 .resume-card__veil {
   position: absolute;
@@ -224,21 +275,23 @@
 }
 
 .resume-card__eyebrow {
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(224, 123, 57, 0.78);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .resume-card__title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.9rem, 4vw, 2.5rem);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: rgba(224, 123, 57, 0.9);
-  line-height: 1;
+  line-height: 1.1;
   text-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
   transition: transform 0.25s ease, opacity 0.25s ease;
 }

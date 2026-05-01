@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { API_BASE, resolveUrl } from '../config'
 import './ProjectDetail.css'
 
 const GITHUB_ICON = (
@@ -29,26 +30,209 @@ const LOCK_ICON = (
   </svg>
 )
 
+const PLAY_ICON = (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+    <circle cx="12" cy="12" r="12" fillOpacity="0.55" />
+    <polygon points="10,8 18,12 10,16" fill="white" />
+  </svg>
+)
+
+const PDF_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="28" height="28">
+    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="9" y1="13" x2="15" y2="13" />
+    <line x1="9" y1="17" x2="15" y2="17" />
+  </svg>
+)
+
+const CHEVRON_LEFT = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="28" height="28">
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+)
+
+const CHEVRON_RIGHT = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="28" height="28">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+)
+
+function getMediaType(url = '') {
+  const u = url.toLowerCase().split('?')[0]
+  if (/youtube\.com|youtu\.be/.test(u)) return 'youtube'
+  if (/vimeo\.com/.test(u)) return 'vimeo'
+  if (/\.(mp4|webm|ogg|mov)$/.test(u)) return 'video'
+  if (/\.pdf$/.test(u)) return 'pdf'
+  return 'image'
+}
+
+function toEmbedUrl(url, autoplay = false) {
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/)
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}${autoplay ? '?autoplay=1' : ''}`
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/)
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}${autoplay ? '?autoplay=1' : ''}`
+  return url
+}
+
+function HeroMedia({ src, title, onClick }) {
+  const type = getMediaType(src)
+  if (type === 'image') {
+    return (
+      <img
+        src={src}
+        alt={`${title} screenshot`}
+        className="hero-media hero-media--img"
+        onClick={onClick}
+        title="Click to expand"
+      />
+    )
+  }
+  if (type === 'video') {
+    return <video src={src} controls className="hero-media hero-media--video" />
+  }
+  if (type === 'youtube' || type === 'vimeo') {
+    return (
+      <iframe
+        src={toEmbedUrl(src)}
+        className="hero-media hero-media--iframe"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        title={title}
+      />
+    )
+  }
+  if (type === 'pdf') {
+    return <iframe src={src} className="hero-media hero-media--iframe hero-media--pdf" title={title} />
+  }
+  return <img src={src} alt={`${title} screenshot`} className="hero-media hero-media--img" onClick={onClick} />
+}
+
+function GalleryThumb({ src, active, index, onClick }) {
+  const type = getMediaType(src)
+  return (
+    <button
+      className={`gallery__thumb ${active ? 'gallery__thumb--active' : ''}`}
+      onClick={() => onClick(index)}
+      aria-label={`Gallery item ${index + 1}`}
+    >
+      {type === 'image' ? (
+        <img src={src} alt={`gallery ${index + 1}`} />
+      ) : type === 'pdf' ? (
+        <div className="gallery__thumb-placeholder">
+          {PDF_ICON}
+          <span className="gallery__thumb-label mono">PDF</span>
+        </div>
+      ) : (
+        <div className="gallery__thumb-placeholder">
+          {PLAY_ICON}
+          <span className="gallery__thumb-label mono">
+            {type === 'youtube' ? 'YouTube' : type === 'vimeo' ? 'Vimeo' : 'Video'}
+          </span>
+        </div>
+      )}
+    </button>
+  )
+}
+
+function Lightbox({ items, idx, onClose, onPrev, onNext }) {
+  const src = items[idx]
+  const type = getMediaType(src)
+  const multi = items.length > 1
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft' && multi) onPrev()
+      if (e.key === 'ArrowRight' && multi) onNext()
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [onClose, onPrev, onNext, multi])
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  return (
+    <div className="lightbox" onClick={onClose} role="dialog" aria-modal="true">
+      <button className="lightbox__close" onClick={onClose} aria-label="Close">✕</button>
+
+      {multi && (
+        <>
+          <button className="lightbox__arrow lightbox__arrow--prev" onClick={e => { e.stopPropagation(); onPrev() }} aria-label="Previous">
+            {CHEVRON_LEFT}
+          </button>
+          <button className="lightbox__arrow lightbox__arrow--next" onClick={e => { e.stopPropagation(); onNext() }} aria-label="Next">
+            {CHEVRON_RIGHT}
+          </button>
+        </>
+      )}
+
+      <div className="lightbox__content" onClick={e => e.stopPropagation()}>
+        {type === 'image' && (
+          <img src={src} alt={`gallery item ${idx + 1}`} className="lightbox__img" />
+        )}
+        {type === 'video' && (
+          <video src={src} controls autoPlay className="lightbox__video" />
+        )}
+        {(type === 'youtube' || type === 'vimeo') && (
+          <iframe
+            src={toEmbedUrl(src, true)}
+            className="lightbox__iframe"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title={`gallery item ${idx + 1}`}
+          />
+        )}
+        {type === 'pdf' && (
+          <iframe src={src} className="lightbox__iframe lightbox__iframe--pdf" title={`gallery item ${idx + 1}`} />
+        )}
+      </div>
+
+      {multi && (
+        <div className="lightbox__counter mono">
+          {idx + 1} / {items.length}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ProjectDetail() {
   const { id } = useParams()
   const [project, setProject] = useState(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
   const [activeImg, setActiveImg] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIdx, setLightboxIdx] = useState(0)
 
   useEffect(() => {
     setLoading(true)
     setActiveImg(0)
-    fetch(`/api/projects/${id}`)
+    fetch(`${API_BASE}/api/projects/${id}`)
       .then(r => {
         if (!r.ok) { setNotFound(true); setLoading(false); return null }
         return r.json()
       })
       .then(data => {
-        if (data) { setProject(data); setLoading(false) }
+        if (data) {
+          setProject({ ...data, screenshots: (data.screenshots || []).map(resolveUrl) })
+          setLoading(false)
+        }
       })
       .catch(() => { setNotFound(true); setLoading(false) })
   }, [id])
+
+  const openLightbox = useCallback((idx) => {
+    setLightboxIdx(idx)
+    setLightboxOpen(true)
+  }, [])
+  const closeLightbox = useCallback(() => setLightboxOpen(false), [])
+  const prevItem = useCallback(() => setLightboxIdx(i => (i - 1 + (project?.screenshots?.length || 1)) % (project?.screenshots?.length || 1)), [project])
+  const nextItem = useCallback(() => setLightboxIdx(i => (i + 1) % (project?.screenshots?.length || 1)), [project])
 
   if (loading) {
     return (
@@ -69,128 +253,146 @@ export default function ProjectDetail() {
     )
   }
 
-  const { title, description, longDescription, tags = [], github, liveUrl, screenshots = [], createdAt, isProprietaryWork } = project
-  const heroImg = screenshots[activeImg] ?? screenshots[0] ?? null
+  const { title, description, longDescription, tags = [], github, liveUrl, screenshots = [], projectDate, createdAt, isProprietaryWork } = project
+  const heroSrc = screenshots[activeImg] ?? screenshots[0] ?? null
+  const heroType = heroSrc ? getMediaType(heroSrc) : null
   const paragraphs = longDescription ? longDescription.split(/\n\n+/).filter(Boolean) : []
 
   return (
-    <div className="project-detail">
-      <div className="container">
+    <>
+      <div className="project-detail">
+        <div className="container">
 
-        <Link to="/#projects" className="project-detail__back">
-          {BACK_ICON} All projects
-        </Link>
+          <Link to="/#projects" className="project-detail__back">
+            {BACK_ICON} All projects
+          </Link>
 
-        <div className="project-detail__header">
-          <div className="project-detail__header-left">
-            <p className="section-label">case study</p>
-            <h1 className="project-detail__title">{title}</h1>
-            <p className="project-detail__subtitle">{description}</p>
-            <div className="project-detail__header-tags">
-              {tags.map(t => <span key={t} className="tag">{t}</span>)}
-            </div>
-          </div>
-
-          <div className="project-detail__header-right">
-            {isProprietaryWork && (
-              <span className="project-detail__proprietary-badge">
-                {LOCK_ICON} Proprietary
-              </span>
-            )}
-            {!isProprietaryWork && github && (
-              <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-                {GITHUB_ICON} Source
-              </a>
-            )}
-            {liveUrl && (
-              <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-                {EXTERNAL_ICON} Live demo
-              </a>
-            )}
-          </div>
-        </div>
-
-        {heroImg && (
-          <div className="project-detail__hero">
-            <img src={heroImg} alt={`${title} screenshot`} />
-          </div>
-        )}
-
-        <div className="project-detail__body">
-          <main className="project-detail__content">
-            {paragraphs.length > 0 ? (
-              <div className="project-detail__long-desc">
-                {paragraphs.map((para, i) => <p key={i}>{para}</p>)}
-              </div>
-            ) : (
-              <div className="project-detail__long-desc project-detail__long-desc--empty">
-                <p className="sketch">No case study written yet.</p>
-              </div>
-            )}
-
-            {screenshots.length > 1 && (
-              <div className="project-detail__gallery">
-                <h3 className="gallery__heading">Screenshots</h3>
-                <div className="gallery__grid">
-                  {screenshots.map((src, i) => (
-                    <button
-                      key={i}
-                      className={`gallery__thumb ${activeImg === i ? 'gallery__thumb--active' : ''}`}
-                      onClick={() => setActiveImg(i)}
-                      aria-label={`Screenshot ${i + 1}`}
-                    >
-                      <img src={src} alt={`${title} screenshot ${i + 1}`} />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </main>
-
-          <aside className="project-detail__sidebar">
-            <div className="sidebar-block">
-              <h4 className="sidebar-block__heading">About</h4>
-              {isProprietaryWork && (
-                <div className="sidebar-proprietary">
-                  {LOCK_ICON}
-                  <span>Proprietary — source not public</span>
-                </div>
-              )}
-              {createdAt && (
-                <p className="sidebar-meta">
-                  Built {new Date(createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
-                </p>
-              )}
-            </div>
-
-            <div className="sidebar-block">
-              <h4 className="sidebar-block__heading">Tech Stack</h4>
-              <div className="sidebar-tags">
+          <div className="project-detail__header">
+            <div className="project-detail__header-left">
+              <p className="section-label">case study</p>
+              <h1 className="project-detail__title">{title}</h1>
+              <p className="project-detail__subtitle">{description}</p>
+              <div className="project-detail__header-tags">
                 {tags.map(t => <span key={t} className="tag">{t}</span>)}
               </div>
             </div>
 
-            {((!isProprietaryWork && github) || liveUrl) && (
+            <div className="project-detail__header-right">
+              {isProprietaryWork && (
+                <span className="project-detail__proprietary-badge">
+                  {LOCK_ICON} Proprietary
+                </span>
+              )}
+              {!isProprietaryWork && github && (
+                <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                  {GITHUB_ICON} Source
+                </a>
+              )}
+              {liveUrl && (
+                <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                  {EXTERNAL_ICON} Live demo
+                </a>
+              )}
+            </div>
+          </div>
+
+          {heroSrc && (
+            <div
+              className={`project-detail__hero${heroType === 'image' ? ' project-detail__hero--clickable' : ''}`}
+              onClick={heroType === 'image' ? () => openLightbox(activeImg) : undefined}
+            >
+              <HeroMedia src={heroSrc} title={title} onClick={heroType === 'image' ? () => openLightbox(activeImg) : undefined} />
+            </div>
+          )}
+
+          <div className="project-detail__body">
+            <main className="project-detail__content">
+              {paragraphs.length > 0 ? (
+                <div className="project-detail__long-desc">
+                  {paragraphs.map((para, i) => <p key={i}>{para}</p>)}
+                </div>
+              ) : (
+                <div className="project-detail__long-desc project-detail__long-desc--empty">
+                  <p className="sketch">No case study written yet.</p>
+                </div>
+              )}
+
+              {screenshots.length > 0 && (
+                <div className="project-detail__gallery">
+                  <h3 className="gallery__heading">Gallery</h3>
+                  <div className="gallery__grid">
+                    {screenshots.map((src, i) => (
+                      <GalleryThumb
+                        key={i}
+                        src={src}
+                        active={activeImg === i}
+                        index={i}
+                        onClick={(idx) => { setActiveImg(idx); openLightbox(idx) }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </main>
+
+            <aside className="project-detail__sidebar">
               <div className="sidebar-block">
-                <h4 className="sidebar-block__heading">Links</h4>
-                <div className="sidebar-links">
-                  {!isProprietaryWork && github && (
-                    <a href={github} target="_blank" rel="noopener noreferrer" className="sidebar-link">
-                      {GITHUB_ICON} View source
-                    </a>
-                  )}
-                  {liveUrl && (
-                    <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="sidebar-link">
-                      {EXTERNAL_ICON} Live demo
-                    </a>
-                  )}
+                <h4 className="sidebar-block__heading">About</h4>
+                {isProprietaryWork && (
+                  <div className="sidebar-proprietary">
+                    {LOCK_ICON}
+                    <span>Proprietary — source not public</span>
+                  </div>
+                )}
+                {(projectDate || createdAt) && (
+                  <p className="sidebar-meta">
+                    {projectDate
+                      ? `Built ${new Date(projectDate + '-01').toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}`
+                      : `Built ${new Date(createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}`
+                    }
+                  </p>
+                )}
+              </div>
+
+              <div className="sidebar-block">
+                <h4 className="sidebar-block__heading">Tech Stack</h4>
+                <div className="sidebar-tags">
+                  {tags.map(t => <span key={t} className="tag">{t}</span>)}
                 </div>
               </div>
-            )}
-          </aside>
-        </div>
 
+              {((!isProprietaryWork && github) || liveUrl) && (
+                <div className="sidebar-block">
+                  <h4 className="sidebar-block__heading">Links</h4>
+                  <div className="sidebar-links">
+                    {!isProprietaryWork && github && (
+                      <a href={github} target="_blank" rel="noopener noreferrer" className="sidebar-link">
+                        {GITHUB_ICON} View source
+                      </a>
+                    )}
+                    {liveUrl && (
+                      <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="sidebar-link">
+                        {EXTERNAL_ICON} Live demo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </aside>
+          </div>
+
+        </div>
       </div>
-    </div>
+
+      {lightboxOpen && screenshots.length > 0 && (
+        <Lightbox
+          items={screenshots}
+          idx={lightboxIdx}
+          onClose={closeLightbox}
+          onPrev={prevItem}
+          onNext={nextItem}
+        />
+      )}
+    </>
   )
 }

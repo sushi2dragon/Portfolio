@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { API_BASE, resolveUrl } from '../config'
 
 const DEFAULT = {
   name: 'Sarthak',
@@ -28,11 +29,14 @@ export function SiteProvider({ children }) {
   const [site, setSite] = useState(DEFAULT)
 
   useEffect(() => {
-    fetch('/api/site')
+    fetch(`${API_BASE}/api/site`)
       .then(r => r.json())
       .then(data => setSite({
         ...DEFAULT,
         ...data,
+        portrait: resolveUrl(data.portrait),
+        resumeUrl: resolveUrl(data.resumeUrl),
+        resumePreview: resolveUrl(data.resumePreview),
         about: { ...DEFAULT.about, ...data.about },
         social: { ...DEFAULT.social, ...data.social },
       }))

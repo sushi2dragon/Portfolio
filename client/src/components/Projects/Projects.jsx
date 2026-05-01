@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import ProjectCard from './ProjectCard'
+import { API_BASE } from '../../config'
 import './Projects.css'
 
 const SEARCH_ICON = (
@@ -67,7 +68,7 @@ export default function Projects() {
   const [tagsOpen, setTagsOpen, tagsRef]   = useDropdown()
 
   useEffect(() => {
-    fetch('/api/projects')
+    fetch(`${API_BASE}/api/projects`)
       .then(r => r.json())
       .then(data => { setProjects(data); setLoading(false) })
       .catch(() => setLoading(false))
@@ -101,8 +102,8 @@ export default function Projects() {
     })
 
     list = [...list].sort((a, b) => {
-      if (sortBy === 'newest') return new Date(b.createdAt) - new Date(a.createdAt)
-      if (sortBy === 'oldest') return new Date(a.createdAt) - new Date(b.createdAt)
+      if (sortBy === 'newest') return (b.projectDate || b.createdAt).localeCompare(a.projectDate || a.createdAt)
+      if (sortBy === 'oldest') return (a.projectDate || a.createdAt).localeCompare(b.projectDate || b.createdAt)
       if (sortBy === 'az')     return a.title.localeCompare(b.title)
       if (sortBy === 'za')     return b.title.localeCompare(a.title)
       return 0

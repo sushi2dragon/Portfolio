@@ -1,62 +1,91 @@
 const router = require('express').Router()
-const fs = require('fs')
-const path = require('path')
 const requireAuth = require('../middleware/auth')
+const Project = require('../models/Project')
+const { SuggestionError, suggestTagsForProject } = require('../services/tagSuggester')
 
-const DATA_FILE = path.join(__dirname, '../data/projects.json')
-
-const read = () => JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'))
-const write = (data) => fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2))
-
-// Public
-router.get('/', (req, res) => {
-  res.json(read())
+router.post('/tags/suggest', requireAuth, async (req, res) => {
+  try {
+    const result = await suggestTagsForProject({
+      description: req.body.description,
+      longDescription: req.body.longDescription,
+      github: req.body.github,
+      screenshots: req.body.screenshots,
+      existingTags: req.body.existingTags,
+    })
+    res.json(result)
+  } catch (error) {
+    const status = error instanceof SuggestionError ? error.status : 500
+    res.status(status).json({ error: error.message || 'Unable to suggest tags.', warnings: error.warnings || [] })
+  }
 })
 
-router.get('/:id', (req, res) => {
-  const project = read().find(p => p.id === req.params.id)
-  if (!project) return res.status(404).json({ error: 'Not found' })
-  res.json(project)
+// Public
+router.get('/', async (req, res) => {
+  try {
+    const projects = await Project.find({}).sort({ createdAt: -1 }).lean()
+    res.json(projects)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+router.get('/:id', async (req, res) => {
+  try {
+    const project = await Project.findOne({ id: req.params.id }).lean()
+    if (!project) return res.status(404).json({ error: 'Not found' })
+    res.json(project)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
 // Admin only
-router.post('/', requireAuth, (req, res) => {
-  const projects = read()
-  const project = {
-    id: Date.now().toString(),
-    title: req.body.title || 'Untitled',
-    description: req.body.description || '',
-    longDescription: req.body.longDescription || '',
-    tags: req.body.tags || [],
-    github: req.body.github || '',
-    liveUrl: req.body.liveUrl || '',
-    screenshots: req.body.screenshots || [],
-    isProprietaryWork: req.body.isProprietaryWork || false,
-    createdAt: new Date().toISOString(),
+router.post('/', requireAuth, async (req, res) => {
+  try {
+    const project = await Project.create({
+      id: Date.now().toString(),
+      title: req.body.title || 'Untitled',
+      description: req.body.description || '',
+      longDescription: req.body.longDescription || '',
+      tags: req.body.tags || [],
+      github: req.body.github || '',
+      liveUrl: req.body.liveUrl || '',
+      screenshots: req.body.screenshots || [],
+      isProprietaryWork: req.body.isProprietaryWork || false,
+      projectDate: req.body.projectDate || '',
+      createdAt: new Date().toISOString(),
+      category: req.body.category || 'personal',
+      status: req.body.status || 'completed',
+    })
+    res.status(201).json(project.toObject())
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-  projects.unshift(project)
-  write(projects)
-  res.status(201).json(project)
 })
 
-router.put('/:id', requireAuth, (req, res) => {
-  const projects = read()
-  const idx = projects.findIndex(p => p.id === req.params.id)
-  if (idx === -1) return res.status(404).json({ error: 'Not found' })
-
-  projects[idx] = { ...projects[idx], ...req.body, id: projects[idx].id }
-  write(projects)
-  res.json(projects[idx])
+router.put('/:id', requireAuth, async (req, res) => {
+  try {
+    const { _id, id, ...updates } = req.body
+    const project = await Project.findOneAndUpdate(
+      { id: req.params.id },
+      { $set: updates },
+      { new: true }
+    ).lean()
+    if (!project) return res.status(404).json({ error: 'Not found' })
+    res.json(project)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
-router.delete('/:id', requireAuth, (req, res) => {
-  const projects = read()
-  const idx = projects.findIndex(p => p.id === req.params.id)
-  if (idx === -1) return res.status(404).json({ error: 'Not found' })
-
-  projects.splice(idx, 1)
-  write(projects)
-  res.json({ ok: true })
+router.delete('/:id', requireAuth, async (req, res) => {
+  try {
+    const result = await Project.findOneAndDelete({ id: req.params.id })
+    if (!result) return res.status(404).json({ error: 'Not found' })
+    res.json({ ok: true })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
 module.exports = router
