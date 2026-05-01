@@ -6,6 +6,8 @@ export default function ThreeBackground() {
 
   useEffect(() => {
     const mount = mountRef.current
+    if (!mount) return
+
     const w = mount.clientWidth
     const h = mount.clientHeight
 
@@ -84,19 +86,33 @@ export default function ThreeBackground() {
       scene.add(linesMesh)
     }
 
-    // Mouse repulsion
+    // Start centered so mobile and first paint don't depend on pointer input.
     const mouse3D = { x: 0, y: 0 }
-    const mouseScreen = { x: -9999, y: -9999 }
+    const mouseScreen = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
+    let hasPointerInput = false
     const REPULSE_RADIUS = 28
     const REPULSE_STRENGTH = 1.4
 
-    const onMouseMove = (e) => {
-      mouseScreen.x = e.clientX
-      mouseScreen.y = e.clientY
-      mouse3D.x =  (e.clientX / window.innerWidth  - 0.5) * 160
-      mouse3D.y = -(e.clientY / window.innerHeight - 0.5) * 100
+    const updatePointer = (clientX, clientY) => {
+      hasPointerInput = true
+      mouseScreen.x = clientX
+      mouseScreen.y = clientY
+      mouse3D.x = (clientX / window.innerWidth - 0.5) * 160
+      mouse3D.y = -(clientY / window.innerHeight - 0.5) * 100
     }
+
+    const onMouseMove = (e) => {
+      updatePointer(e.clientX, e.clientY)
+    }
+
+    const onTouchMove = (e) => {
+      const touch = e.touches?.[0]
+      if (!touch) return
+      updatePointer(touch.clientX, touch.clientY)
+    }
+
     window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('touchmove', onTouchMove, { passive: true })
 
     let frameCount = 0
     let animId
@@ -104,6 +120,14 @@ export default function ThreeBackground() {
     const animate = () => {
       animId = requestAnimationFrame(animate)
       frameCount++
+
+      if (!hasPointerInput) {
+        const time = frameCount * 0.012
+        mouseScreen.x = window.innerWidth / 2 + Math.cos(time) * window.innerWidth * 0.08
+        mouseScreen.y = window.innerHeight / 2 + Math.sin(time * 0.8) * window.innerHeight * 0.06
+        mouse3D.x = (mouseScreen.x / window.innerWidth - 0.5) * 160
+        mouse3D.y = -(mouseScreen.y / window.innerHeight - 0.5) * 100
+      }
 
       const pos = geometry.attributes.position.array
 
@@ -153,6 +177,7 @@ export default function ThreeBackground() {
     return () => {
       cancelAnimationFrame(animId)
       window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('touchmove', onTouchMove)
       window.removeEventListener('resize', onResize)
       renderer.dispose()
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
