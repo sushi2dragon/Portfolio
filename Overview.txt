@@ -1,0 +1,12 @@
+a website to host all of my projects, it acts sort of like a blog with me being able to log in and add in new projects when i do them, each project having different tags, and visitors to the site being able to filter by tag, each project containing a description, a github link, screenshots of the project, and anything u feel it needs, a short description section,
+use 3js for making it
+references for the page:
+
+https://betterdiscord.app/themes
+https://github.com/codewithsadee/vcard-personal-portfolio
+
+https://brittanychiang.com
+
+https://brittanychiang.com
+
+color pallete for the website should prefer warm colors over cool colors, include both light and dark modes

@@ -1,0 +1,124 @@
+.about {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.about__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about__bio {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+
+.about__skills-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.about__skills-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 1rem;
+}
+
+.about__skills-list li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about__skill-bullet {
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+/* Visual card */
+.about__visual {
+  display: flex;
+  justify-content: center;
+}
+
+.about__card {
+  width: 100%;
+  max-width: 340px;
+  background: rgba(34, 22, 8, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem;
+  position: relative;
+}
+
+.about__card::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: -12px;
+  bottom: -12px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  z-index: -1;
+}
+
+.about__card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about__card-label {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  color: var(--text-muted);
+}
+
+.about__card-project {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--text-primary);
+}
+
+.about__card--link {
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.about__card--link:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.about__card-arrow {
+  font-size: 1rem;
+  color: var(--accent);
+  transition: transform 0.2s;
+}
+
+.about__card--link:hover .about__card-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 900px) {
+  .about__inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .about__visual { display: none; }
+}

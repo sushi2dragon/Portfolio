@@ -1,0 +1,157 @@
+[
+  {
+    "id": "1",
+    "title": "Portfolio Website",
+    "description": "This very site — a full-stack portfolio with Three.js background, admin CMS, and tag-filtered project tiles.",
+    "longDescription": "This portfolio was designed and built from scratch as a technical exercise and public showcase. The goal was to feel personal and handcrafted — not another cookie-cutter Tailwind template — while meeting professional expectations around performance and polish.\n\nThe Three.js particle network in the hero was one of the more challenging elements to get right. The particles need to feel alive without distracting from the content, and the whole scene has to clean up properly in React's strict mode without leaking WebGL contexts. The warm amber palette came as an intentional pushback against the typical cold grey/blue developer portfolio aesthetic.\n\nThe backend is a lightweight Express server with JWT auth and flat-file JSON storage — deliberately simple, since the data requirements don't justify a database. The admin dashboard makes it possible to update projects without touching source code, which matters when you're actually using the site day-to-day.",
+    "tags": ["React", "Three.js", "Node.js", "Express"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Portfolio+—+Hero+Section",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Portfolio+—+Projects+Grid",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Portfolio+—+Admin+Dashboard"
+    ],
+    "isProprietaryWork": false,
+    "category": "personal",
+    "status": "completed",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "AI Chat Interface",
+    "description": "A real-time chat application powered by a large language model API, with conversation history, streaming responses, and custom system prompts.",
+    "longDescription": "Built as an exploration of what a genuinely polished LLM interface could feel like. Most chat UIs are clones of ChatGPT; this one was designed to feel like a native desktop app, with an emphasis on keyboard navigation, dense information display, and minimal decorative chrome.\n\nThe backend streams tokens over WebSockets rather than waiting for full completions, which dramatically changes the perceived latency. Managing streaming state in React without excessive re-renders required careful memoization — the final solution uses a ref-based accumulator that only flushes to state every animation frame.\n\nContext window management turned out to be the most interesting UX problem. The app estimates token consumption in real time and surfaces a warning before conversations overflow, giving users the choice to summarize, prune, or start fresh rather than discovering truncation after the fact.",
+    "tags": ["React", "Python", "FastAPI", "WebSocket"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=AI+Chat+—+Conversation+View",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=AI+Chat+—+System+Prompt+Editor"
+    ],
+    "isProprietaryWork": false,
+    "category": "personal",
+    "status": "completed",
+    "createdAt": "2024-01-03T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "E-Commerce Dashboard",
+    "description": "An analytics dashboard for an online store with real-time sales charts, inventory management, and order tracking built with a React frontend.",
+    "longDescription": "An internal analytics tool built for an online retail operation. The brief was broad: 'we need to see what's happening in the store in real time.' The main challenge was deciding what to surface — there were dozens of possible metrics, and showing the wrong ones would make the dashboard noisy rather than useful.\n\nAfter working through the requirements, the design converged on three primary views: live sales activity, inventory alerts, and order status. Chart.js handles the visualisations, with a custom data-normalisation layer that smooths out the irregular polling intervals from the external inventory API.\n\nThe most technically interesting part was optimistic UI for order status updates. Orders can be edited from the dashboard, and the state machine had to handle concurrent edits from multiple users gracefully, without showing stale data.",
+    "tags": ["React", "Node.js", "PostgreSQL", "Chart.js"],
+    "github": "",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Dashboard+—+Sales+Overview",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Dashboard+—+Inventory+View",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Dashboard+—+Order+Tracking"
+    ],
+    "isProprietaryWork": true,
+    "category": "professional",
+    "status": "completed",
+    "createdAt": "2024-01-04T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Markdown Note App",
+    "description": "A minimal note-taking app with live markdown preview, local-first storage, tag organisation, and a distraction-free writing mode.",
+    "longDescription": "The problem with most note apps is they want to be your second brain. This one just wants to get out of the way. The design constraint was: every interaction should take fewer than two keystrokes.\n\nStorage is handled entirely in IndexedDB through a thin abstraction layer, which means the app works offline from first load and never touches a server. The sync model is append-only — edits are stored as delta operations rather than full document snapshots, which makes conflict resolution in a future multi-device scenario much simpler.\n\nThe markdown renderer is a custom implementation rather than a library, which sounds excessive but gave precise control over how code blocks, tables, and inline elements render. The live preview updates at 60fps even for large documents by only re-rendering the changed block rather than the full document tree.",
+    "tags": ["React", "TypeScript", "IndexedDB"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Notes+—+Editor+View",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Notes+—+Split+Preview"
+    ],
+    "isProprietaryWork": false,
+    "category": "personal",
+    "status": "in-development",
+    "createdAt": "2024-01-05T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Weather CLI Tool",
+    "description": "A terminal utility that fetches and displays weather forecasts with coloured output, location detection, and a 7-day chart drawn in ASCII.",
+    "longDescription": "A command-line weather tool built partly as a utility and partly as an exploration of what terminal UX can look like when you actually care about it. The bar is usually low for CLI aesthetics; the goal here was to see how close you could get to a polished UI without leaving the terminal.\n\nLocation detection uses the system's IP geolocation as a fallback, but the preferred path is a cached location stored in a config file — making subsequent calls instant. The 7-day forecast is rendered as an ASCII bar chart with ANSI colour codes for temperature ranges, which required careful handling of wide characters to keep columns aligned across different terminal widths.\n\nThe most useful feature turned out to be the hourly rain probability graph, shown as a spark line. It's the first thing to check before deciding whether to bring an umbrella.",
+    "tags": ["Python", "API", "CLI"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Weather+CLI+—+Forecast+Output",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Weather+CLI+—+7-Day+Chart"
+    ],
+    "isProprietaryWork": false,
+    "category": "personal",
+    "status": "completed",
+    "createdAt": "2024-01-06T00:00:00.000Z"
+  },
+  {
+    "id": "6",
+    "title": "Multiplayer Word Game",
+    "description": "A browser-based multiplayer word-guessing game using WebSockets for real-time sync, with room codes, score tracking, and animated reveals.",
+    "longDescription": "A real-time browser game built to explore what a polished multiplayer word game could feel like. The core mechanic is cooperative: players in the same room share a word pool and race to find words before time runs out.\n\nThe multiplayer state is managed with Socket.io. The trickiest part was keeping game state consistent when players join mid-round or lose their connection — the server maintains a single source of truth and sends a full state snapshot on reconnect, rather than trying to replay events.\n\nAnimations were deliberately designed to be snappy rather than elaborate. The letter-reveal effect on correct words uses a CSS stagger animation that feels satisfying without slowing down gameplay. The room code system generates short, memorable codes that avoid visually ambiguous characters (0/O, 1/I/l).",
+    "tags": ["React", "Node.js", "Socket.io", "Express"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Word+Game+—+Game+Room",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Word+Game+—+Score+Screen"
+    ],
+    "isProprietaryWork": false,
+    "category": "academic",
+    "status": "completed",
+    "createdAt": "2024-01-07T00:00:00.000Z"
+  },
+  {
+    "id": "7",
+    "title": "Expense Tracker",
+    "description": "A personal finance tracker with category budgets, monthly breakdowns, CSV import/export, and a clean mobile-first layout.",
+    "longDescription": "Built to replace a complicated spreadsheet that had grown too unwieldy to maintain. The key requirement was that importing data from a bank CSV should be automatic — no manual categorisation for every transaction.\n\nThe import pipeline uses a rules-based categorisation engine: each rule matches transactions by merchant name pattern and assigns a category. Rules are stored locally and can be edited directly in the app. After the first few months of use, roughly 85% of transactions are auto-categorised without manual intervention.\n\nThe mobile layout was designed first, since that's where most expense-checking happens. The desktop view adds a few extra columns and a side-by-side chart view, but the core interactions — adding transactions, checking budgets, reviewing spending — are identical across screen sizes.",
+    "tags": ["React", "TypeScript", "SQLite"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Expense+Tracker+—+Budget+View",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Expense+Tracker+—+Monthly+Breakdown"
+    ],
+    "isProprietaryWork": false,
+    "category": "personal",
+    "status": "in-development",
+    "createdAt": "2024-01-08T00:00:00.000Z"
+  },
+  {
+    "id": "8",
+    "title": "Dev Blog Engine",
+    "description": "A statically generated blog with MDX support, syntax highlighting, reading time estimates, and an RSS feed. Deployed to the edge.",
+    "longDescription": "The blog started as a simple Markdown setup and evolved into a full MDX pipeline as the content requirements grew. MDX was the right call: being able to embed interactive React components in posts (live code sandboxes, data visualisations, custom callouts) changes what's possible in a technical article.\n\nStatic generation at build time means there's no server to maintain, no database to query, and no cold starts on edge workers. The build time with 60+ posts is under 8 seconds. A preview API route handles draft posts without rebuilding the whole site.\n\nThe RSS feed and sitemap are generated from the same data pipeline as the pages, which means they're never out of sync. Syntax highlighting uses Shiki for accurate language support, including some niche languages (Gleam, Zig) that other highlighters struggle with.",
+    "tags": ["Next.js", "MDX", "TailwindCSS"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Blog+—+Post+Listing",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=Blog+—+Article+View"
+    ],
+    "isProprietaryWork": false,
+    "category": "academic",
+    "status": "completed",
+    "createdAt": "2024-01-09T00:00:00.000Z"
+  },
+  {
+    "id": "9",
+    "title": "REST API Boilerplate",
+    "description": "A production-ready Express boilerplate with JWT auth, role-based access control, rate limiting, request validation, and full OpenAPI docs.",
+    "longDescription": "A production-ready starting point for Node/Express APIs, extracted from three different client projects where the same infrastructure kept being rebuilt from scratch. The goal was to make the right defaults hard to deviate from accidentally.\n\nThe auth system implements JWT with refresh token rotation — access tokens are short-lived (15 minutes), refresh tokens are long-lived but single-use and stored in an httpOnly cookie. This setup is a reasonable trade-off between security and developer ergonomics without requiring a session store.\n\nRole-based access control is implemented as a middleware factory that accepts a list of allowed roles, making it easy to protect routes at the Express level. The OpenAPI spec is generated from route handlers using JSDoc annotations, so the docs stay in sync with the implementation without a separate generation step.",
+    "tags": ["Node.js", "Express", "PostgreSQL", "REST"],
+    "github": "https://github.com/",
+    "liveUrl": "",
+    "screenshots": [
+      "https://placehold.co/1200x675/1a1108/e07b39?text=API+Boilerplate+—+OpenAPI+Docs",
+      "https://placehold.co/1200x675/1a1108/e07b39?text=API+Boilerplate+—+Auth+Flow"
+    ],
+    "isProprietaryWork": false,
+    "category": "personal",
+    "status": "completed",
+    "createdAt": "2024-01-10T00:00:00.000Z"
+  }
+]

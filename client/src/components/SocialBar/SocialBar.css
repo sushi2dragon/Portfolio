@@ -1,0 +1,60 @@
+.social-bar {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: fadeIn 0.6s ease 0.8s both;
+}
+
+.social-bar__list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  background: rgba(22, 14, 5, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-light);
+  border-radius: 40px;
+  padding: 0.45rem 0.75rem;
+}
+
+.social-bar__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.65rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease, transform 0.2s ease;
+  border-radius: 50%;
+}
+
+.social-bar__link:hover {
+  color: var(--accent);
+  transform: translateY(-4px);
+}
+
+.social-bar__line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--border-light), transparent);
+  opacity: 0.6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .social-bar {
+    display: none;
+  }
+}

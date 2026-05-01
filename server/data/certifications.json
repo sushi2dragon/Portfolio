@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "name": "Machine Learning Specialization",
+    "issuer": "Coursera",
+    "issuerDomain": "coursera.org",
+    "date": "2024-03",
+    "credentialUrl": ""
+  },
+  {
+    "id": "2",
+    "name": "MATLAB Onramp",
+    "issuer": "MathWorks",
+    "issuerDomain": "mathworks.com",
+    "date": "2023-11",
+    "credentialUrl": ""
+  },
+  {
+    "id": "3",
+    "name": "IBM Data Science Professional Certificate",
+    "issuer": "IBM",
+    "issuerDomain": "ibm.com",
+    "date": "2023-08",
+    "credentialUrl": ""
+  },
+  {
+    "id": "4",
+    "name": "Deep Learning Specialization",
+    "issuer": "DeepLearning.AI",
+    "issuerDomain": "deeplearning.ai",
+    "date": "2024-06",
+    "credentialUrl": ""
+  },
+  {
+    "id": "5",
+    "name": "AWS Cloud Practitioner Essentials",
+    "issuer": "Amazon Web Services",
+    "issuerDomain": "aws.amazon.com",
+    "date": "2024-01",
+    "credentialUrl": ""
+  }
+]
