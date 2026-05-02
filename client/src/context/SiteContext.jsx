@@ -10,8 +10,8 @@ const DEFAULT = {
   resumeUrl: '/resume.pdf',
   resumePreview: '',
   about: {
-    bio: “Hi, I'm Sarthak — a Cyber-Physical Systems student working across software, data, and real-world systems.\n\nMy experience spans spatial computing, geospatial tech, and computer vision. I'm particularly interested in understanding how systems behave—where they break, why they fail, and how they can be improved.\n\nI co-founded a startup focused on interactive geospatial experiences. Much of my work is driven by experimentation: using existing technologies to build practical, useful applications. That might take the form of AR/VR systems for indoor navigation, real-time 3D reconstruction tools, PC workflow utilities, or smaller projects that reduce friction in everyday tasks.\n\nI'm interested in computer vision, data systems, AR/VR, systems design, and full-stack development.”,
-    currentProject: 'This portfolio ✦',
+    bio: "Hi, I'm Sarthak - a Cyber-Physical Systems student working across software, data, and real-world systems.\n\nMy experience spans spatial computing, geospatial tech, and computer vision. I'm particularly interested in understanding how systems behave - where they break, why they fail, and how they can be improved.\n\nI co-founded a startup focused on interactive geospatial experiences. Much of my work is driven by experimentation: using existing technologies to build practical, useful applications. That might take the form of AR/VR systems for indoor navigation, real-time 3D reconstruction tools, PC workflow utilities, or smaller projects that reduce friction in everyday tasks.\n\nI'm interested in computer vision, data systems, AR/VR, systems design, and full-stack development.",
+    currentProject: 'This portfolio *',
     currentProjectId: null,
     skills: ['Python', 'C++', 'Unity', 'Blender', 'TensorFlow', 'OpenCV', 'React', 'Node.js', 'Arduino', 'Three.js', 'JavaScript', 'C#', 'WebAR'],
   },
