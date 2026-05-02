@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { API_BASE } from '../../config'
 import './Certifications.css'
 
 // Map common issuer domains for favicon logos
@@ -103,7 +104,7 @@ export default function Certifications() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/certifications')
+    fetch(`${API_BASE}/api/certifications`)
       .then(r => r.json())
       .then(data => { setCerts(data); setLoading(false) })
       .catch(() => setLoading(false))
