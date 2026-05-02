@@ -100,13 +100,18 @@ export default function Hero() {
 
             <div className="resume-card__veil" aria-hidden="true" />
 
+            <svg
+              className="resume-card__border"
+              viewBox="0 0 320 380"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <rect x="14" y="14" width="292" height="352" rx="3" ry="3" />
+            </svg>
+
             <div className="resume-card__content">
-              <p className="resume-card__eyebrow mono">View</p>
-              <h2 className="resume-card__title">My CV</h2>
-              <span className="resume-card__button">
-                {RESUME_ICON}
-                Download resume
-              </span>
+              <p className="resume-card__eyebrow mono">Download</p>
+              <h2 className="resume-card__title">Resume</h2>
             </div>
           </a>
         </div>
