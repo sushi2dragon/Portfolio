@@ -329,24 +329,25 @@ export default function AdminDashboard() {
     setTimeout(() => document.querySelector('.admin-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
   }
 
-  const handleEdit = (p) => {
+  const handleEdit = async (p) => {
     resetTagSuggestionState()
     setEditId(p.id)
-    setForm({
-      title: p.title || '',
-      description: p.description || '',
-      longDescription: p.longDescription || '',
-      tags: p.tags || [],
-      github: p.github || '',
-      liveUrl: p.liveUrl || '',
-      screenshots: (p.screenshots || []).map(resolveUrl),
-      isProprietaryWork: p.isProprietaryWork || false,
-      category: p.category || 'personal',
-      status: p.status || 'completed',
-      projectDate: p.projectDate || '',
-    })
     setShowForm(true)
     setTimeout(() => document.querySelector('.admin-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+    const full = await fetch(`${API_BASE}/api/projects/${p.id}`).then(r => r.json())
+    setForm({
+      title: full.title || '',
+      description: full.description || '',
+      longDescription: full.longDescription || '',
+      tags: full.tags || [],
+      github: full.github || '',
+      liveUrl: full.liveUrl || '',
+      screenshots: (full.screenshots || []).map(resolveUrl),
+      isProprietaryWork: full.isProprietaryWork || false,
+      category: full.category || 'personal',
+      status: full.status || 'completed',
+      projectDate: full.projectDate || '',
+    })
   }
 
   const handleCancelForm = () => {
