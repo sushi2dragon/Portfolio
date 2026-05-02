@@ -133,12 +133,15 @@
 
 .resume-card__preview {
   position: absolute;
-  inset: 0;
-  filter: blur(28px) saturate(0.4) brightness(0.28);
-  transform: scale(1.12);
-  opacity: 0.7;
-  clip-path: inset(14px round 3px);
-  transition: filter 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 3;
+  transition: opacity 0.5s ease;
   transition-delay: 0s;
 }
 
@@ -273,21 +276,14 @@
 }
 
 .resume-card__preview-overlay {
-  position: absolute;
-  inset: 0;
-  clip-path: inset(14px round 3px);
-  background:
-    radial-gradient(circle at 50% 20%, rgba(224, 123, 57, 0.06), transparent 60%),
-    linear-gradient(180deg, rgba(18, 10, 4, 0.42) 0%, rgba(12, 7, 3, 0.72) 100%);
-  opacity: 1;
-  transition: opacity 0.2s ease;
-  transition-delay: 0s;
+  display: none;
 }
 
+/* Single uniform layer covering the entire card — same look inside and outside.
+   Stays visible always; the CV reveals on top of it inside the inner rect. */
 .resume-card__veil {
   position: absolute;
   inset: 0;
-  clip-path: inset(14px round 3px);
   background:
     repeating-linear-gradient(
       45deg,
@@ -297,10 +293,7 @@
       rgba(224, 123, 57, 0.035) 6px
     ),
     linear-gradient(180deg, rgba(24, 15, 7, 0.16), rgba(20, 12, 6, 0.38));
-  backdrop-filter: blur(10px);
-  opacity: 1;
-  transition: opacity 0.2s ease;
-  transition-delay: 0s;
+  z-index: 2;
 }
 
 .resume-card__content {
@@ -348,29 +341,12 @@
   transition-delay: 0.75s;
 }
 
-/* After text fades, reveal the PDF preview */
+/* After border draws and text fades, fade in the CV inside the inner rect.
+   The veil stays put — outside the inner rect it remains the unified dark surface. */
 .resume-card:hover .resume-card__preview,
 .resume-card:focus-visible .resume-card__preview {
-  filter: blur(0px) saturate(1) brightness(0.92);
-  transform: scale(1);
   opacity: 1;
-  transition: filter 0.55s ease, transform 0.55s ease, opacity 0.55s ease;
-  transition-delay: 0.85s;
-}
-
-/* Dissolve the veil at the same time */
-.resume-card:hover .resume-card__veil,
-.resume-card:focus-visible .resume-card__veil {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  transition-delay: 0.85s;
-}
-
-/* Also dissolve the dark overlay */
-.resume-card:hover .resume-card__preview-overlay,
-.resume-card:focus-visible .resume-card__preview-overlay {
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.55s ease;
   transition-delay: 0.85s;
 }
 
