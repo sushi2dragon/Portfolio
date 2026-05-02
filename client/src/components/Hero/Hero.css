@@ -137,7 +137,8 @@
   filter: blur(28px) saturate(0.4) brightness(0.28);
   transform: scale(1.12);
   opacity: 0.7;
-  transition: filter 0.38s ease, transform 0.38s ease, opacity 0.38s ease;
+  transition: filter 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  transition-delay: 0s;
 }
 
 .resume-card__preview-image {
@@ -292,7 +293,15 @@
     ),
     linear-gradient(180deg, rgba(24, 15, 7, 0.16), rgba(20, 12, 6, 0.38));
   backdrop-filter: blur(10px);
-  transition: backdrop-filter 0.38s ease, background 0.38s ease, opacity 0.38s ease;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  transition-delay: 0s;
+}
+
+.resume-card__preview-overlay {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  transition-delay: 0s;
 }
 
 .resume-card__content {
@@ -315,7 +324,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(224, 123, 57, 0.78);
-  transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .resume-card__title {
@@ -327,57 +336,43 @@
   color: rgba(224, 123, 57, 0.9);
   line-height: 1.1;
   text-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s ease, opacity 0.25s ease, color 0.25s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+/* After border draws (0.9s), fade out the text */
 .resume-card:hover .resume-card__eyebrow,
-.resume-card:focus-visible .resume-card__eyebrow {
-  color: rgba(224, 123, 57, 1);
-}
-
+.resume-card:focus-visible .resume-card__eyebrow,
 .resume-card:hover .resume-card__title,
 .resume-card:focus-visible .resume-card__title {
-  color: rgba(224, 123, 57, 1);
-  transform: translateY(-1px);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition-delay: 0.75s;
 }
 
+/* After text fades, reveal the PDF preview */
 .resume-card:hover .resume-card__preview,
 .resume-card:focus-visible .resume-card__preview {
-  filter: blur(22px) saturate(0.4) brightness(0.32);
-  transform: scale(1.08);
-  opacity: 0.8;
+  filter: blur(0px) saturate(1) brightness(0.92);
+  transform: scale(1);
+  opacity: 1;
+  transition: filter 0.55s ease, transform 0.55s ease, opacity 0.55s ease;
+  transition-delay: 0.85s;
 }
 
-.resume-card--document:hover .resume-card__preview,
-.resume-card--document:focus-visible .resume-card__preview {
-  filter: blur(0.35px) saturate(1) brightness(0.99);
-}
-
+/* Dissolve the veil at the same time */
 .resume-card:hover .resume-card__veil,
 .resume-card:focus-visible .resume-card__veil {
-  backdrop-filter: blur(1px);
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 5px,
-      rgba(224, 123, 57, 0.02) 5px,
-      rgba(224, 123, 57, 0.02) 6px
-    ),
-    linear-gradient(180deg, rgba(20, 12, 6, 0.05), rgba(20, 12, 6, 0.12));
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transition-delay: 0.85s;
 }
 
-.resume-card--document:hover .resume-card__veil,
-.resume-card--document:focus-visible .resume-card__veil {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 5px,
-      rgba(224, 123, 57, 0.025) 5px,
-      rgba(224, 123, 57, 0.025) 6px
-    ),
-    linear-gradient(180deg, rgba(20, 12, 6, 0.04), rgba(20, 12, 6, 0.08));
+/* Also dissolve the dark overlay */
+.resume-card:hover .resume-card__preview-overlay,
+.resume-card:focus-visible .resume-card__preview-overlay {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transition-delay: 0.85s;
 }
 
 /* Socials moved to bottom */
@@ -502,6 +497,13 @@
 
   .resume-card::after {
     opacity: 0;
+  }
+
+  .resume-card__eyebrow,
+  .resume-card__title {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
   }
 
   .resume-card__veil {

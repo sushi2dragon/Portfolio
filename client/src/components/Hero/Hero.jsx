@@ -1,20 +1,51 @@
+import { useEffect, useState } from 'react'
+import * as pdfjsLib from 'pdfjs-dist'
 import { useSite } from '../../context/SiteContext'
 import './Hero.css'
 
-const RESUME_ICON = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <polyline points="14 2 14 8 20 8" />
-    <line x1="8" y1="13" x2="16" y2="13" />
-    <line x1="8" y1="17" x2="14" y2="17" />
-  </svg>
-)
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).href
 
-function ResumeDocMockup({ name }) {
+function PDFPreview({ src }) {
+  const [imgSrc, setImgSrc] = useState(null)
+
+  useEffect(() => {
+    if (!src || !src.endsWith('.pdf')) return
+    let cancelled = false
+    async function render() {
+      const pdf = await pdfjsLib.getDocument(src).promise
+      if (cancelled) return
+      const page = await pdf.getPage(1)
+      if (cancelled) return
+      const viewport = page.getViewport({ scale: 2 })
+      const canvas = document.createElement('canvas')
+      canvas.width = viewport.width
+      canvas.height = viewport.height
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise
+      if (cancelled) return
+      setImgSrc(canvas.toDataURL('image/jpeg', 0.9))
+    }
+    render().catch(() => {})
+    return () => { cancelled = true }
+  }, [src])
+
+  if (!imgSrc) return <ResumeDocMockup />
+  return (
+    <img
+      src={imgSrc}
+      alt="Resume preview"
+      className="resume-card__preview-image"
+    />
+  )
+}
+
+function ResumeDocMockup() {
   return (
     <div className="resume-doc">
       <div className="resume-doc__header">
-        <div className="resume-doc__name">{name || 'Sarthak Dravid'}</div>
+        <div className="resume-doc__name">Sarthak Dravid</div>
         <div className="resume-doc__tagline">Developer · Student · Builder</div>
         <div className="resume-doc__contacts">
           <span>GitHub</span><span>·</span><span>LinkedIn</span><span>·</span><span>Email</span>
@@ -71,6 +102,7 @@ export default function Hero() {
   const { site } = useSite()
   const { name, subtitle, resumeUrl, social } = site
   const resumeHref = resumeUrl || '/resume.pdf'
+  const hasPdf = resumeUrl && resumeUrl.includes('.pdf')
 
   return (
     <section className="hero" id="home">
@@ -94,7 +126,10 @@ export default function Hero() {
             aria-label="Download resume"
           >
             <div className="resume-card__preview" aria-hidden="true">
-              <ResumeDocMockup name={name} />
+              {hasPdf
+                ? <PDFPreview src={resumeUrl} />
+                : <ResumeDocMockup />
+              }
               <div className="resume-card__preview-overlay" />
             </div>
 
