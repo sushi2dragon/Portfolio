@@ -1,44 +1,14 @@
-import { useEffect, useState } from 'react'
-import * as pdfjsLib from 'pdfjs-dist'
 import { useSite } from '../../context/SiteContext'
 import './Hero.css'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).href
+function cloudinaryThumb(url) {
+  if (!url || !url.includes('cloudinary.com')) return null
+  return url.replace('/upload/', '/upload/f_jpg,pg_1,w_640,q_auto/')
+}
 
-function PDFPreview({ src }) {
-  const [imgSrc, setImgSrc] = useState(null)
-
-  useEffect(() => {
-    if (!src || !src.endsWith('.pdf')) return
-    let cancelled = false
-    async function render() {
-      const pdf = await pdfjsLib.getDocument(src).promise
-      if (cancelled) return
-      const page = await pdf.getPage(1)
-      if (cancelled) return
-      const viewport = page.getViewport({ scale: 2 })
-      const canvas = document.createElement('canvas')
-      canvas.width = viewport.width
-      canvas.height = viewport.height
-      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise
-      if (cancelled) return
-      setImgSrc(canvas.toDataURL('image/jpeg', 0.9))
-    }
-    render().catch(() => {})
-    return () => { cancelled = true }
-  }, [src])
-
-  if (!imgSrc) return <ResumeDocMockup />
-  return (
-    <img
-      src={imgSrc}
-      alt="Resume preview"
-      className="resume-card__preview-image"
-    />
-  )
+function cloudinaryDownload(url) {
+  if (!url || !url.includes('cloudinary.com')) return url
+  return url.replace('/upload/', '/upload/fl_attachment/')
 }
 
 function ResumeDocMockup() {
@@ -51,9 +21,7 @@ function ResumeDocMockup() {
           <span>GitHub</span><span>·</span><span>LinkedIn</span><span>·</span><span>Email</span>
         </div>
       </div>
-
       <div className="resume-doc__divider" />
-
       <div className="resume-doc__section">
         <div className="resume-doc__section-label">Experience</div>
         <div className="resume-doc__entry">
@@ -69,9 +37,7 @@ function ResumeDocMockup() {
           <span className="resume-doc__line" style={{ width: '65%' }} />
         </div>
       </div>
-
       <div className="resume-doc__divider resume-doc__divider--light" />
-
       <div className="resume-doc__section">
         <div className="resume-doc__section-label">Education</div>
         <div className="resume-doc__entry">
@@ -80,18 +46,12 @@ function ResumeDocMockup() {
           <span className="resume-doc__line" style={{ width: '82%' }} />
         </div>
       </div>
-
       <div className="resume-doc__divider resume-doc__divider--light" />
-
       <div className="resume-doc__section">
         <div className="resume-doc__section-label">Skills</div>
         <div className="resume-doc__skills">
-          <span>Python</span>
-          <span>React</span>
-          <span>Unity</span>
-          <span>OpenCV</span>
-          <span>Three.js</span>
-          <span>PyTorch</span>
+          <span>Python</span><span>React</span><span>Unity</span>
+          <span>OpenCV</span><span>Three.js</span><span>PyTorch</span>
         </div>
       </div>
     </div>
@@ -100,9 +60,10 @@ function ResumeDocMockup() {
 
 export default function Hero() {
   const { site } = useSite()
-  const { name, subtitle, resumeUrl, social } = site
-  const resumeHref = resumeUrl || '/resume.pdf'
-  const hasPdf = resumeUrl && resumeUrl.includes('.pdf')
+  const { name, subtitle, resumeUrl } = site
+
+  const thumbUrl    = cloudinaryThumb(resumeUrl)
+  const downloadUrl = cloudinaryDownload(resumeUrl) || '/resume.pdf'
 
   return (
     <section className="hero" id="home">
@@ -120,14 +81,14 @@ export default function Hero() {
 
         <div className="hero__resume">
           <a
-            href={resumeHref}
+            href={downloadUrl}
             download="Sarthak_Dravid_CV.pdf"
             className="resume-card"
             aria-label="Download resume"
           >
             <div className="resume-card__preview" aria-hidden="true">
-              {hasPdf
-                ? <PDFPreview src={resumeUrl} />
+              {thumbUrl
+                ? <img src={thumbUrl} alt="Resume preview" className="resume-card__preview-image" />
                 : <ResumeDocMockup />
               }
               <div className="resume-card__preview-overlay" />

@@ -86,7 +86,8 @@ router.post('/resume', requireAuth, resumeUpload.single('resume'), async (req, r
   try {
     const result = await uploadToCloudinary(req.file.buffer, {
       folder: 'portfolio/resume',
-      resource_type: 'raw',
+      resource_type: 'image',
+      format: 'pdf',
       use_filename: true,
       unique_filename: true,
     })
