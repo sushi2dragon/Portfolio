@@ -1,14 +1,26 @@
 import { useSite } from '../../context/SiteContext'
 import './Hero.css'
 
-function cloudinaryThumb(url) {
-  if (!url || !url.includes('cloudinary.com')) return null
-  return url.replace('/upload/', '/upload/f_jpg,pg_1,w_640,q_auto/')
+function getDriveFileId(url) {
+  if (!url) return null
+  const m = url.match(/\/file\/d\/([^/?#]+)/) || url.match(/[?&]id=([^&]+)/)
+  return m ? m[1] : null
 }
 
-function cloudinaryDownload(url) {
-  if (!url || !url.includes('cloudinary.com')) return url
-  return url.replace('/upload/', '/upload/fl_attachment/')
+function getThumbUrl(url) {
+  if (!url) return null
+  const driveId = getDriveFileId(url)
+  if (driveId) return `https://drive.google.com/thumbnail?id=${driveId}&sz=w640-h900`
+  if (url.includes('cloudinary.com')) return url.replace('/upload/', '/upload/f_jpg,pg_1,w_640,q_auto/')
+  return null
+}
+
+function getDownloadUrl(url) {
+  if (!url) return '/resume.pdf'
+  const driveId = getDriveFileId(url)
+  if (driveId) return `https://drive.google.com/uc?export=download&id=${driveId}`
+  if (url.includes('cloudinary.com')) return url.replace('/upload/', '/upload/fl_attachment/')
+  return url
 }
 
 function ResumeDocMockup() {
@@ -62,8 +74,8 @@ export default function Hero() {
   const { site } = useSite()
   const { name, subtitle, resumeUrl } = site
 
-  const thumbUrl    = cloudinaryThumb(resumeUrl)
-  const downloadUrl = cloudinaryDownload(resumeUrl) || '/resume.pdf'
+  const thumbUrl    = getThumbUrl(resumeUrl)
+  const downloadUrl = getDownloadUrl(resumeUrl)
 
   return (
     <section className="hero" id="home">
