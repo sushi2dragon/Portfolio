@@ -63,6 +63,22 @@
   font-weight: 600;
 }
 
+.project-card__placeholder-symbol.sketch {
+  font-size: 2.1rem;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.project-card__placeholder-label {
+  position: absolute;
+  bottom: 0.9rem;
+  right: 0.9rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  opacity: 0.85;
+}
+
 /* subtle shine on image hover instead of dark overlay */
 .project-card:hover .project-card__img {
   filter: brightness(1.05) sepia(5%);

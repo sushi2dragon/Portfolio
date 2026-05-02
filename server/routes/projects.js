@@ -22,7 +22,12 @@ router.post('/tags/suggest', requireAuth, async (req, res) => {
 // Public
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find({}).sort({ createdAt: -1 }).lean()
+    const projects = await Project.find(
+      {},
+      'id title description tags screenshots isProprietaryWork projectDate createdAt category status liveUrl github'
+    )
+      .sort({ createdAt: -1 })
+      .lean()
     res.json(projects)
   } catch (err) {
     res.status(500).json({ error: err.message })
