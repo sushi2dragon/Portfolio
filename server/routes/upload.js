@@ -1,35 +1,30 @@
 const router = require('express').Router()
 const multer = require('multer')
 const path = require('path')
-const fs = require('fs')
+const { Readable } = require('stream')
+const cloudinary = require('cloudinary').v2
 const requireAuth = require('../middleware/auth')
 
-const UPLOADS_DIR = path.join(__dirname, '../uploads')
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true })
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase()
-    const safeBase = path.basename(file.originalname, ext).replace(/[^a-z0-9-_]/gi, '-').toLowerCase()
-    const name = `${Date.now()}-${safeBase || 'upload'}${ext}`
-    cb(null, name)
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
+// Keep files in memory — no disk needed
+const memStorage = multer.memoryStorage()
+
 const imageUpload = multer({
-  storage,
+  storage: memStorage,
   limits: { fileSize: 8 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Only image files are allowed'))
-    }
+    if (!file.mimetype.startsWith('image/')) return cb(new Error('Only image files are allowed'))
     cb(null, true)
   },
 })
 
 const galleryUpload = multer({
-  storage,
+  storage: memStorage,
   limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const ok = file.mimetype.startsWith('image/') ||
@@ -41,36 +36,64 @@ const galleryUpload = multer({
 })
 
 const resumeUpload = multer({
-  storage,
+  storage: memStorage,
   limits: { fileSize: 12 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase()
     const isPdf = file.mimetype === 'application/pdf' || ext === '.pdf'
-    if (!isPdf) {
-      return cb(new Error('Only PDF files are allowed'))
-    }
+    if (!isPdf) return cb(new Error('Only PDF files are allowed'))
     cb(null, true)
   },
 })
 
-const uploadUrl = (filename) => {
-  const base = process.env.BACKEND_URL || ''
-  return `${base}/uploads/${filename}`
-}
+const uploadToCloudinary = (buffer, options) =>
+  new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(options, (err, result) => {
+      if (err) reject(err)
+      else resolve(result)
+    })
+    Readable.from(buffer).pipe(stream)
+  })
 
-router.post('/', requireAuth, imageUpload.single('image'), (req, res) => {
+router.post('/', requireAuth, imageUpload.single('image'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ url: uploadUrl(req.file.filename) })
+  try {
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: 'portfolio',
+      resource_type: 'image',
+    })
+    res.json({ url: result.secure_url })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
-router.post('/gallery', requireAuth, galleryUpload.single('file'), (req, res) => {
+router.post('/gallery', requireAuth, galleryUpload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ url: uploadUrl(req.file.filename) })
+  try {
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: 'portfolio/gallery',
+      resource_type: 'auto',
+    })
+    res.json({ url: result.secure_url })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
-router.post('/resume', requireAuth, resumeUpload.single('resume'), (req, res) => {
+router.post('/resume', requireAuth, resumeUpload.single('resume'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ url: uploadUrl(req.file.filename) })
+  try {
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: 'portfolio/resume',
+      resource_type: 'raw',
+      use_filename: true,
+      unique_filename: true,
+    })
+    res.json({ url: result.secure_url })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
 module.exports = router
