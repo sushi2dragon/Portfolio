@@ -29,6 +29,21 @@
 
   --scrollbar-thumb: #3d2b15;
   --scrollbar-track: #1a1108;
+
+  /* Layered "frame card" surfaces (resume + currently-building) */
+  --card-frame-bg: linear-gradient(180deg, rgba(26, 17, 8, 0.82), rgba(15, 10, 5, 0.94));
+  --card-frame-border: rgba(224, 123, 57, 0.22);
+  --card-frame-border-hover: rgba(224, 123, 57, 0.4);
+  --card-frame-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  --card-frame-shadow-hover: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --card-veil-bg:
+    repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(224, 123, 57, 0.035) 5px, rgba(224, 123, 57, 0.035) 6px),
+    linear-gradient(180deg, rgba(24, 15, 7, 0.16), rgba(20, 12, 6, 0.38));
+  --card-stroke: rgba(224, 123, 57, 0.85);
+  --card-stroke-glow: drop-shadow(0 0 6px rgba(224, 123, 57, 0.45));
+  --card-eyebrow: rgba(224, 123, 57, 0.78);
+  --card-title: rgba(224, 123, 57, 0.9);
+  --card-title-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme='light'] {
@@ -60,6 +75,21 @@
 
   --scrollbar-thumb: #d4b896;
   --scrollbar-track: #f5ede0;
+
+  /* Layered "frame card" surfaces in light mode */
+  --card-frame-bg: linear-gradient(180deg, #fffbf5, #f5ede0);
+  --card-frame-border: rgba(200, 90, 17, 0.22);
+  --card-frame-border-hover: rgba(200, 90, 17, 0.5);
+  --card-frame-shadow: 0 4px 20px rgba(120, 70, 25, 0.08);
+  --card-frame-shadow-hover: 0 14px 32px rgba(120, 70, 25, 0.18);
+  --card-veil-bg:
+    repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(200, 90, 17, 0.05) 5px, rgba(200, 90, 17, 0.05) 6px),
+    linear-gradient(180deg, rgba(245, 237, 224, 0.25), rgba(232, 213, 190, 0.4));
+  --card-stroke: rgba(200, 90, 17, 0.9);
+  --card-stroke-glow: drop-shadow(0 0 4px rgba(200, 90, 17, 0.3));
+  --card-eyebrow: rgba(200, 90, 17, 0.85);
+  --card-title: rgba(200, 90, 17, 0.95);
+  --card-title-shadow: 0 2px 8px rgba(200, 90, 17, 0.15);
 }
 
 * {
