@@ -188,6 +188,37 @@
   transform: translateX(4px);
 }
 
+/* ── Light mode ──────────────────────────────────────── */
+[data-theme='light'] .about__card {
+  border-color: rgba(200, 90, 17, 0.22);
+  background:
+    linear-gradient(180deg, #fffbf5, #f5ede0);
+  box-shadow: 0 4px 20px rgba(120, 70, 25, 0.08);
+}
+
+[data-theme='light'] .about__card--link:hover,
+[data-theme='light'] .about__card--link:focus-visible {
+  border-color: rgba(200, 90, 17, 0.5);
+  box-shadow: 0 14px 32px rgba(120, 70, 25, 0.18);
+}
+
+[data-theme='light'] .about__card-veil {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 5px,
+      rgba(200, 90, 17, 0.05) 5px,
+      rgba(200, 90, 17, 0.05) 6px
+    ),
+    linear-gradient(180deg, rgba(245, 237, 224, 0.25), rgba(232, 213, 190, 0.4));
+}
+
+[data-theme='light'] .about__card-border rect {
+  stroke: rgba(200, 90, 17, 0.9);
+  filter: drop-shadow(0 0 4px rgba(200, 90, 17, 0.3));
+}
+
 @media (max-width: 900px) {
   .about__inner {
     grid-template-columns: 1fr;

@@ -342,12 +342,56 @@
 }
 
 /* After border draws and text fades, fade in the CV inside the inner rect.
-   The veil stays put — outside the inner rect it remains the unified dark surface. */
+   The veil stays put — outside the inner rect it remains the unified surface. */
 .resume-card:hover .resume-card__preview,
 .resume-card:focus-visible .resume-card__preview {
   opacity: 1;
   transition: opacity 0.55s ease;
   transition-delay: 0.85s;
+}
+
+/* ── Light mode ──────────────────────────────────────── */
+[data-theme='light'] .resume-card {
+  border-color: rgba(200, 90, 17, 0.22);
+  background:
+    linear-gradient(180deg, #fffbf5, #f5ede0);
+  box-shadow: 0 4px 20px rgba(120, 70, 25, 0.08);
+}
+
+[data-theme='light'] .resume-card:hover,
+[data-theme='light'] .resume-card:focus-visible {
+  border-color: rgba(200, 90, 17, 0.5);
+  box-shadow: 0 14px 32px rgba(120, 70, 25, 0.18);
+}
+
+[data-theme='light'] .resume-card::after {
+  border-color: rgba(200, 90, 17, 0.18);
+}
+
+[data-theme='light'] .resume-card__veil {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 5px,
+      rgba(200, 90, 17, 0.05) 5px,
+      rgba(200, 90, 17, 0.05) 6px
+    ),
+    linear-gradient(180deg, rgba(245, 237, 224, 0.25), rgba(232, 213, 190, 0.4));
+}
+
+[data-theme='light'] .resume-card__eyebrow {
+  color: rgba(200, 90, 17, 0.85);
+}
+
+[data-theme='light'] .resume-card__title {
+  color: rgba(200, 90, 17, 0.95);
+  text-shadow: 0 2px 8px rgba(200, 90, 17, 0.15);
+}
+
+[data-theme='light'] .resume-card__border rect {
+  stroke: rgba(200, 90, 17, 0.9);
+  filter: drop-shadow(0 0 4px rgba(200, 90, 17, 0.3));
 }
 
 /* Socials moved to bottom */
